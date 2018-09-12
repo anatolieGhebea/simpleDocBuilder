@@ -1,0 +1,25 @@
+body {
+    background: #f1f1f1;
+}
+
+.pg-toolbar {
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-height: 2rem;
+    background: #ccc;
+
+
+    .wrapper {
+
+        display: flex;
+        flex-flow: row;
+        justify-content: center;
+        align-items: center;
+
+    }
+}
+
+@import 'doc';

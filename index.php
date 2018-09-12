@@ -1,3 +1,9 @@
+<?php 
+// codice relativo al server
+
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,10 +11,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Document single page builder</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
+    
     
 </head>
-<body>
+<body class="main">
     <h1>Simple single page document builder</h1>
 
     <div class="document-content-preview">
