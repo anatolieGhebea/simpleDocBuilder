@@ -71,12 +71,18 @@
     </div>
 </div>
 
+<div id="csContextMenu" class="cs-contextMenu" style="display:none;position:absolute;">
+    <ul>
+        <li><a href="#">Item 1</a></li>
+        <li><a href="#">Item 2</a></li>
+        <li><a href="#">Item 3</a></li>
+    </ul>
+</div>
+
 
 <script src="js/main.js"></script>
 
 <script>
-
-    let addWithInput = 
 
 </script>
 
