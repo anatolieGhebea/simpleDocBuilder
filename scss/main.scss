@@ -22,4 +22,59 @@ body {
     }
 }
 
+.document-content-preview {
+    border:1px solid #dedede;
+    width: 99%;
+    margin: 2rem auto;
+}
+
+.main {
+    margin: 0;
+    padding: 0;
+    > h1 {
+        background: #dedede;
+        margin: 0;
+        padding: 1rem;
+    } 
+}
+
+.inputPopup {
+    display: none;
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    min-width: 60%;
+    background: #0c0c0cb3;
+    box-shadow: 0 0 2px 2px #ccc;
+    padding: 1rem;
+    width: 100%;
+    height: 100%;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+
+    > div{
+        padding: 2rem;
+        background: #fff;
+        min-width: 30rem;
+        width: 60%;
+    }
+}
+
+.inputPopup.open {
+    display: flex;
+
+    input {
+        width: 100%;
+    }
+}
+
+
+@media screen and(min-width: 64rem){
+    .document-content-preview {
+        width: 90%;
+    }
+}
+
 @import 'doc';

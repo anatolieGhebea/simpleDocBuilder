@@ -1,3 +1,7 @@
+body {
+  background: #f1f1f1;
+}
+
 .pg-toolbar {
   position: fixed;
   bottom: 0;
@@ -13,8 +17,93 @@
   align-items: center;
 }
 
-body {
-  background: #f1f1f1;
+.document-content-preview {
+  border: 1px solid #dedede;
+  width: 99%;
+  margin: 2rem auto;
+}
+
+.main {
+  margin: 0;
+  padding: 0;
+}
+.main > h1 {
+  background: #dedede;
+  margin: 0;
+  padding: 1rem;
+}
+
+.inputPopup {
+  display: none;
+  position: fixed;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  min-width: 60%;
+  background: #0c0c0cb3;
+  box-shadow: 0 0 2px 2px #ccc;
+  padding: 1rem;
+  width: 100%;
+  height: 100%;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.inputPopup > div {
+  padding: 2rem;
+  background: #fff;
+  min-width: 30rem;
+  width: 60%;
+}
+
+.inputPopup.open {
+  display: flex;
+}
+.inputPopup.open input {
+  width: 100%;
+}
+
+@media screen and (min-width: 64rem) {
+  .document-content-preview {
+    width: 90%;
+  }
+}
+.main-document {
+  padding: 1rem;
+  line-height: 1.5;
+  letter-spacing: 1px;
+  background: #fafafa;
+}
+.main-document .page-cols {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  justify-items: flex-start;
+}
+.main-document .page-cols .col-sx {
+  min-width: 20rem;
+  max-width: 35rem;
+  width: auto;
+}
+.main-document .page-cols .col-dx {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+.main-document h1 {
+  color: blue;
+  font-weight: bold;
+}
+.main-document .section {
+  padding-left: 1rem;
+}
+.main-document .section h2 {
+  color: #475cd8;
+}
+.main-document .section .paragraph {
+  color: #777;
+}
+.main-document .section .paragraph textarea {
+  width: 100%;
 }
 
 /*# sourceMappingURL=main.css.map */

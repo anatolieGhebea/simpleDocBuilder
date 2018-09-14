@@ -18,10 +18,34 @@
 <body class="main">
     <h1>Simple single page document builder</h1>
 
-    <div class="document-content-preview">
-        <div class="main-document">
+    <div id="document-preview" class="document-content-preview">
+        <div id="main-document" class="main-document">
+            <div class="page-cols">
+                <div class="col-sx sidebar">
+                    side bar
+                </div>
+                <div class="col-dx pg-content" id="pg-content">
+                    <!-- chapter template -->
+                    <div class="chapter">
+                        <h1>Introduzione</h1>
 
+                        <div class="section">
+                            <h2># parte prima</h2>
+                            <div class="paragraph">
+                                qui ci va l'html generato da rich text area
+                            </div>
+                        </div>
+                        <div class="section">
+                            <h2># parte seconda</h2>
+                            <div class="paragraph">
+                                <textarea name="" id="" cols="30" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end chapter template  -->
 
+                </div>
+            </div>
         </div>  
     </div>
 
@@ -33,29 +57,26 @@
             <button>Add Section</button>
             <button>Add Paragraph</button>
             
-
         </div>
     </div>
 
+<div class="inputPopup" id="inputPopup">
+    <div>
+        <label for="temp-input">Inserisci il titolo o il nome</label>
+        <input type="text" id="temp-input">
+        <div class="btn-act">
+            <button id="add-with-input">add content</button>
+            <button id="abort-action">abort action</button>
+        </div>
+    </div>
+</div>
 
-<script src="main.js"></script>
+
+<script src="js/main.js"></script>
+
 <script>
 
-    function loadDocPage(name){
-
-    }
-
-    function addChapter(){
-        //add a simple input
-    }
-
-    function addSection(id_chapter = null){
-        //add a simple imput 
-    }
-
-    function addParagraph(id_section = null){
-        //load tiny_mce
-    }
+    let addWithInput = 
 
 </script>
 
