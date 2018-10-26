@@ -1,18 +1,75 @@
 {
     "docTitle": "Manuale PPM",
-    "liv1":[
+    "chapters": [
         {
-            "type": "chp | subChp | p",
-            "id": "chp-123456",
-            "value" : [
-                {
-                    "type": " subChp | p",
-                    "id": "chp-123456-subChp-1234567",
-                    "value" : [
-
-                    ]
-                }
-            ]
+            "chapter":{
+                "id": 1,
+                "chapterTitle": "",
+                "subChapters":[
+                    {
+                    "subChapter":{
+                            "id": "1-1",
+                            "subChapterTitle": "",
+                            "paragraphs":[
+                                {
+                                    "id":"1-1-1",
+                                    "text": "",
+                                    "rawHtml":""
+                                }
+                            ]        
+                        }
+                    }
+                ],
+                "paragraphs":[
+                    {
+                        "paragraph":{
+                            "id":"1-1-1",
+                            "text": "",
+                            "rawHtml":""
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "chapter":{
+                "id": 2,
+                "chapterTitle": "",
+                "subChapters":[
+                    {
+                    "subChapter":{
+                            "id": "2-1",
+                            "subChapterTitle": "",
+                            "paragraphs":[
+                                {
+                                    "id":"2-2-1",
+                                    "text": "",
+                                    "rawHtml":""
+                                }
+                            ]        
+                        }
+                    }
+                ],
+                "paragraphs":[
+                    {
+                        "paragraph":{
+                            "id":"2-1-1",
+                            "text": "",
+                            "rawHtml":""
+                        }
+                    }
+                ]
+            }
+        }
+        
+    ],
+    "paragraphs":[
+        {
+            "paragraph":{
+                "id":"1-1-1",
+                "text": "",
+                "rawHtml":""
+            }
         }
     ]
 }

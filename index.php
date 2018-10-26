@@ -17,8 +17,15 @@
             padding: 0;
         }
 
-        textarea {
+        textarea, input {
             width: 100%;
+        }
+
+        input { 
+            border: none;
+        }
+        input:focus {
+            border-bottom: 1px solid teal;
         }
 
         .pgWrapper .container{

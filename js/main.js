@@ -174,27 +174,6 @@ function saveFile(event) {
 
     console.log(sendable);
     
-    var sendableJson, xmlhttp, myObj, x, txt = "";
-
-    sendableJson = JSON.stringify(sendable);
-    
-    xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            // myObj = JSON.parse(this.responseText);
-            // for (x in myObj) {
-                // txt += myObj[x].name + "<br>";
-            // }
-            // document.getElementById("demo").innerHTML = txt;
-            tmpHolder = this.responseText;
-            console.log(tmpHolder);
-            
-        }
-    };
-    xmlhttp.open("POST", "index.php", true);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send(sendableJson);
-
     // let xml = new XMLSerializer().serializeToString(document.getElementById('pgContainer'));
     // console.log(xml);
     
