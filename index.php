@@ -1,90 +1,115 @@
 <?php 
-// codice relativo al server
-
-
+    require('main.php');
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Document single page builder</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
-    
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DocIt</title>
+
+    <!-- da spostare in file a parte -->
+    <style>
+        html, body{
+            margin: 0;
+            padding: 0;
+        }
+
+        textarea {
+            width: 100%;
+        }
+
+        .pgWrapper .container{
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            flex-grow: 1;
+        }
+
+        .pgWrapper .container .sideMenu {
+            min-width: 50px;
+            background: #fafafa;
+
+        }
+
+
+        .pgWrapper .container .page{
+            width: auto;
+            flex-grow: 1;
+            padding: 0 1rem;
+        }
+
+        .pgWrapper .container .page .chapterWrapper {
+            background: #f1f1f1;
+            padding: .5rem 1rem;
+            margin-top: 1rem;
+        }
+
+        .pgWrapper .container .page .chapterWrapper .subChapter {
+            padding: 0.5rem 1rem;
+            background: #dedede;
+            margin: .5rem 0;
+        }
+
+        @media screen and (min-width: 64rem){
+            .pgWrapper .container{
+
+                flex-direction: row;
+
+            }
+
+
+            .pgWrapper .container .sideMenu {
+                width: 300px;
+
+            }
+
+
+            .pgWrapper .container .page{
+                
+
+            }
+        }
+
+    </style>
+
 </head>
-<body class="main">
-    <h1>Simple single page document builder</h1>
+<body id="body">
+    
+    <div class="pgWrapper">
+        <div class="container" id="pgContainer">
+            <div class="sideMenu">
+                menu
+                <button id="save" onclick="saveFile()">Save</button>
 
-    <div id="document-preview" class="document-content-preview">
-        <div id="main-document" class="main-document">
-            <div class="page-cols">
-                <div class="col-sx sidebar">
-                    side bar
-                </div>
-                <div class="col-dx pg-content" id="pg-content">
-                    <!-- chapter template -->
-                    <div class="chapter">
-                        <h1>Introduzione</h1>
-
-                        <div class="section">
-                            <h2># parte prima</h2>
-                            <div class="paragraph">
-                                qui ci va l'html generato da rich text area
-                            </div>
-                        </div>
-                        <div class="section">
-                            <h2># parte seconda</h2>
-                            <div class="paragraph">
-                                <textarea name="" id="" cols="30" rows="10"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end chapter template  -->
-
-                </div>
             </div>
-        </div>  
-    </div>
 
-    <div class="pg-toolbar">
-        <div class="wrapper">
-            <p> tools: </p>
+            <div class="page">
+                <h2>DocIt</h2>
 
-            <button>Add Chapter</button>
-            <button>Add Section</button>
-            <button>Add Paragraph</button>
+                <hr>
+
+                <div class="docRoot" id="docRoot">
+                    <h1><input type="text" id="docTitle" placeholder="Document title..."> </h1>
+
+
+                </div>
+
+                <br>
+                <button id="btnAddChapter" onclick="addChapter(event)" data-chapter-target="docRoot" title="Adds a chapter to 'data-chapter-target', normaly document root">Add Chapter</button>
+
+            </div>
             
         </div>
     </div>
 
-<div class="inputPopup" id="inputPopup">
-    <div>
-        <label for="temp-input">Inserisci il titolo o il nome</label>
-        <input type="text" id="temp-input">
-        <div class="btn-act">
-            <button id="add-with-input">add content</button>
-            <button id="abort-action">abort action</button>
-        </div>
-    </div>
-</div>
-
-<div id="csContextMenu" class="cs-contextMenu" style="display:none;position:absolute;">
-    <ul>
-        <li><a href="#">Item 1</a></li>
-        <li><a href="#">Item 2</a></li>
-        <li><a href="#">Item 3</a></li>
-    </ul>
-</div>
-
-
-<script src="js/main.js"></script>
-
-<script>
-
-</script>
-
+<script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>

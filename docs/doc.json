@@ -1,0 +1,18 @@
+{
+    "docTitle": "Manuale PPM",
+    "liv1":[
+        {
+            "type": "chp | subChp | p",
+            "id": "chp-123456",
+            "value" : [
+                {
+                    "type": " subChp | p",
+                    "id": "chp-123456-subChp-1234567",
+                    "value" : [
+
+                    ]
+                }
+            ]
+        }
+    ]
+}
