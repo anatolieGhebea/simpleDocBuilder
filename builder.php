@@ -37,16 +37,15 @@ function saveElementData($record){
         
         if(existsRecord($rec['id'], $workArray['elements'])){
             foreach ($workArray['elements'] as $key => &$value) {
-                if($value['id'] == $rec['id'] && $value['type'] == $rec['type'] ){
-                    
-                    if($record['action']=='createUpdate'){
+                if($record['action']=='createUpdate'){
+                    if($value['id'] == $rec['id'] && $value['type'] == $rec['type'] ){
                         $value['cnt'] = $rec['cnt'];
                         //for future use (change parent)
                         $value['parentId'] = $rec['parentId'];
                         $value['pos'] = $rec['pos'];
-                    }else if($record['action']=='delete'){
-                        unset($workArray['elements'][$key]);
                     }
+                }else if($record['action']=='delete' && ($value['id'] == $rec['id'] || $value['parentId'] == $rec['id'] )){
+                    unset($workArray['elements'][$key]);
                 }
             }
         }else{
@@ -54,10 +53,9 @@ function saveElementData($record){
                 $workArray['elements'][] = $rec;
         }
 
-        print_r($workArray);
-        array_values($workArray['elements']);
-        print_r($workArray);
-
+        // set alla array keys like 0,1,2,3,....
+        $workArray['elements'] = array_values($workArray['elements']);
+    
         file_put_contents($doc, json_encode($workArray));
     }
 

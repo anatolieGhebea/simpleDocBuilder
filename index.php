@@ -108,16 +108,21 @@
             page-break-after: avoid;
             text-align: left;
         }
+        
+        p {
+            padding-left:0.3rem;
+        }
 
         p > textarea {
             resize: none;
             overflow: hidden;
-            min-height: 50px;
+            min-height: 25px;
             border: none;
             background: transparent none repeat scroll 0% 0% !important;
             z-index: auto;
             position: relative;
-            margin: 10px 0;
+            margin: 5px 0;
+            padding: 0 0 0 0.2rem;
             color: #000;
             font-family: Arial;
             font-size: 14px;
@@ -135,7 +140,7 @@
         }
         
         p:hover {
-            box-shadow: 1px 1px 1px #ccc;
+            box-shadow: 0px 0px 1px 1px #cccc;
         }
 
         p:hover > .actionBtn.delete{

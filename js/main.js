@@ -174,6 +174,8 @@ function addParagraph(event, trg) {
 
 function deleteElement(event){
     saveInputData(event,'delete');
+    let el = document.getElementById(event.target.getAttribute('data-delete-target'));
+    el.parentNode.removeChild(el);
 }
 
 
