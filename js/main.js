@@ -1,34 +1,49 @@
 
 var tmpHolder;
 
-
 // function
 (function(){
     console.log('hello')
 
 })();
 
-function addChapter(event) {
+function addChapter(event, trg) {
     // get html element id
-    let target = event.target.getAttribute('data-chapter-target');
-    console.log(target);
+    let target = null;
+    let id =  null;
+    let cnt = '';
+    if(event !== null ){
+        target = event.target.getAttribute('data-chapter-target');
+        id = 'chp'+getNumNewId();
+    }
+    else{
+        target = trg.parentId;
+        id = trg.id;
+        cnt = trg.cnt;
+    }
+
+    //check target is not null 
+    if(target === null || id === null)
+        return false;
 
     // create chapter wrapper
     let chapter = document.createElement('div');    
-    chapter.id = 'chp'+Math.floor(new Date().getTime()/1000);
-    chapter.classList = 'chapterWrapper';
+    chapter.id = id;
+    chapter.classList = 'chapterWrapper wrapper';
     
     // chapter components
         let chapterTitle = document.createElement('h2');
         chapterTitle.classList = 'chapterTitle';
-        chapterTitle.setAttribute('id',chapter.id +'-title');
+        //chapterTitle.setAttribute('id',chapter.id +'-title');
         // chapterTitle.innerHTML = '<input type="text" id="'+chapter.id +'-title" placeholder="Chapter title">';
         
             let inpt = document.createElement('input');
             inpt.setAttribute('type','text');
+            if( cnt != '') {
+                inpt.setAttribute('value', cnt);
+            }
             inpt.setAttribute('placeholder',"Chapter title");
-            inpt.addEventListener('blur', saveFile);
-
+            inpt.addEventListener('blur', saveInputData);
             chapterTitle.appendChild(inpt);
             
         // add chapter title to chapter
@@ -50,26 +65,44 @@ function addChapter(event) {
     // update server with new information
 }
 
-function addSubChapter(event) {
-    console.log('subchapter');
-    let parentId = event.target.getAttribute('data-parent-chapter');
-    let parent = document.getElementById(parentId);
+function addSubChapter(event, trg) {
+    let parentId = null;
+    let id = null;
+    let cnt = '';
+    let parent = null;
+    if(event !== null){
+        parentId = event.target.getAttribute('data-parent-chapter');
+        id = 'schp'+ getNumNewId();
+        parent = document.getElementById(parentId);
+    }else{
+        parentId = trg.parentId;
+        id = trg.id;
+        cnt = trg.cnt;
+        //get parent contentArea 
+        let cntAreas = document.getElementById(parentId).getElementsByClassName('cnt');
+        parent = cntAreas[0];
+    }
 
+    if(parentId === null || id === null || parent === null)
+        return false
+    
     let subChapter = document.createElement('div');
-    subChapter.classList = 'subChapter';
-    subChapter.id = parentId + '-sub'+ Math.floor(new Date().getTime()/1000);
+    subChapter.classList = 'subChapter wrapper';
+    subChapter.id = id;
     
     // subchapter components
         //add subchapter title (h3)
         let subChapterTitle = document.createElement('h3');
         subChapterTitle.classList = 'subChapterTitle';
-        subChapterTitle.setAttribute('id',subChapter.id +'-title');
+        //subChapterTitle.setAttribute('id',subChapter.id +'-title');
         // subChapterTitle.innerHTML = '<input type="text" id="'+subChapter.id +'-title" placeholder="SubChapter title">';
             let inpt = document.createElement('input');
             inpt.setAttribute('type','text');
-            inpt.setAttribute('placeholder',"Chapter title");
-            inpt.addEventListener('blur', saveFile);
-
+            if( cnt != '') {
+                inpt.setAttribute('value', cnt);
+            }
+            inpt.setAttribute('placeholder'," subChapter title"); 
+            inpt.addEventListener('blur', saveInputData);
             subChapterTitle.appendChild(inpt);
         
         // add chapter title to chapter
@@ -78,34 +111,60 @@ function addSubChapter(event) {
         //add content area 
         let contentArea = document.createElement('div');
         contentArea.id = subChapter.id + '-subCnt';
-        contentArea.classList = 'subChapterCnt';
+        //contentArea.classList = 'subChapterCnt';
+        contentArea.classList = 'cnt';
         subChapter.appendChild(contentArea);
 
         //add action btn (disable addSubchapterBtn)
         let btnActions = actionBtns(contentArea.id, 2);
+
+        // add delete Btn
+        let deleteBtn = removeElementBtn();//get btn "template"
+        deleteBtn.setAttribute('data-delete-target', id);
+        btnActions.appendChild(deleteBtn);
+
         subChapter.appendChild(btnActions);
 
     parent.appendChild(subChapter);
 }
 
-function addParagraph(event) {
-    console.log('paragraph');
-    let parentId = event.target.getAttribute('data-parent-chapter');
-    let parent = document.getElementById(parentId);
+function addParagraph(event, trg) {
+    let parentId = null;
+    let id = null;
+    let cnt = '';
+    let parent = null;
+    if(event !== null){
+        parentId = event.target.getAttribute('data-parent-chapter');
+        id = 'p'+ getNumNewId();
+        parent = document.getElementById(parentId);
+    }else{
+        parentId = trg.parentId;
+        id = trg.id;
+        cnt = trg.cnt;
+        //get parent contentArea 
+        let cntAreas = document.getElementById(parentId).getElementsByClassName('cnt');
+        parent = cntAreas[0];
+    }
+
+    if(parentId === null || id === null )
+        return false
+
 
     let prgInput = document.createElement('p');
-    prgInput.id = parentId + '-prg';
+    prgInput.id = id;
 
     let txt = document.createElement('textarea');
+    if ( cnt != ''){
+        txt.innerHTML = cnt;
+    }
     txt.setAttribute('placeholder','Insert your text here...');
-    txt.addEventListener('blur', saveFile);
+    txt.setAttribute('onkeyup',"auto_grow(this)");
+    txt.addEventListener('blur', saveInputData);
 
     prgInput.appendChild(txt);
 
     parent.appendChild(prgInput);
 }
-
-
 
 
 
@@ -134,7 +193,7 @@ function actionBtns(parentTarget, liv) {
 
 function subChapterBtn(parentTarget){
     let addSubChapter = document.createElement('button');
-    addSubChapter.classList = '';
+    addSubChapter.classList = 'actionBtn section';
     addSubChapter.setAttribute('data-parent-chapter', parentTarget );
     addSubChapter.setAttribute('title','Add subchapter');
     addSubChapter.setAttribute('onclick','addSubChapter(event)');
@@ -146,7 +205,7 @@ function subChapterBtn(parentTarget){
 
 function paragraphBtn(parentTarget){
     let prg = document.createElement('button');
-    prg.classList = '';
+    prg.classList = 'actionBtn paragraph';
     prg.setAttribute('data-parent-chapter', parentTarget );
     prg.setAttribute('title','Add Paragraph');
     prg.setAttribute('onclick','addParagraph(event)');
@@ -156,48 +215,155 @@ function paragraphBtn(parentTarget){
     return prg;
 }
 
+function removeElementBtn(target, title, innerValue){
+    let btn = document.createElement('button');
+    btn.classList = 'actionBtn delete';
+    btn.setAttribute('data-parent-chapter', target );
+    btn.setAttribute('onclick','deleteElement(event)');
+    btn.setAttribute('name','Delete');
+    btn.setAttribute('title',title);
+    btn.innerHTML = innerValue;
+
+    return btn;    
+}
 
 
-/** */
+function buildWorkingPage(data){
+    var cmp = data.elements;
+    //set document title
+    document.getElementById('docTitle').setAttribute('value', data.docTitle);
+    //generate documento form json
+    cmp.forEach(element => {
+        switch(element.type){
+            case "chp": 
+                addChapter(null, element);
+                console.log('adding chapter');
+
+                break;
+            case "subchp":
+                console.log('adding subchapter');
+                addSubChapter(null, element);
+
+                break;
+            case "p":
+                console.log('add parag..');
+                addParagraph(null, element);
+                break;
+            
+            default:
+                break;
+        } 
+    });
+
+    //make all text areas big to fit content
+    let els = document.querySelectorAll("textarea");
+    els.forEach(function(el){        
+        auto_grow(el);
+    });
+}
+
+
+function getNumNewId(){
+    return Math.floor(new Date().getTime()/1000);
+}
+
+/** server iteraction */
 function saveFile(event) {
-    // console.log(event);
 
-    let pTarget = event.target.parentNode; 
-    let id = pTarget.getAttribute('id');
-    
-    let dataContent = event.target.value;
-    
-    let sendable = {
-        'target-id': id,
-        'value': dataContent
-    };
-
-    console.log(sendable);
-    
     // let xml = new XMLSerializer().serializeToString(document.getElementById('pgContainer'));
-    // console.log(xml);
-    
+    // console.log(xml);  
     
 }
 
 
-
+function loadDocumentData() {
+    //load json file with data from server
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            rs = JSON.parse(this.responseText);
+            buildWorkingPage(rs);
+            
+        }
+    };
+    xmlhttp.open("GET", "builder.php", true);
+    xmlhttp.send();
+} 
 
 
 function saveInputData(event){
-
-    let data = event.target.getAttribute('value');
-    console.log(data);
     
+    let parent = event.target.parentNode;
+    // get element type 
+    let elemnetType = null;
+    let parentId = null;
+    let id = null;
+    switch (parent.nodeName) {
+        case 'H2':
+            elemnetType = 'chp';
+            id = parent.closest('div.wrapper').getAttribute('id');
+            parentId =  parent.closest('div.wrapper').parentNode.getAttribute('id');
+            break;
+        case 'H3':
+            elemnetType = 'subchp';
+            id = parent.closest('div.wrapper').getAttribute('id');
+            parentId = event.target.closest('div.wrapper').parentNode.closest('div.wrapper').getAttribute('id');
+            break;
+        case 'P':
+            elemnetType = 'p';
+            id = parent.getAttribute('id');
+            parentId = event.target.closest('div.wrapper').getAttribute('id');
+            break;
+    
+        default:
+            break;
+    }
+     
+    let dataContent = event.target.value;
 
+    let sendable = {
+        'parentId': parentId,
+        'id': id,
+        'type': elemnetType,
+        'cnt': dataContent,
+        'pos': 0
+    };
 
-
+    //console.log(sendable);
+    //send data to server
+    sendDataToServer('builder.php', sendable);
+    
 }
 
+function sendDataToServer(url, data){
 
+    let type = 'POST';
+    let contentType = 'application/json';
+
+    var xhr = new XMLHttpRequest();
+    xhr.open(type, url, true);
+    xhr.setRequestHeader("Content-Type", contentType);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            //var json = JSON.parse(xhr.responseText);
+            console.log(xhr.responseText);
+        }
+    };
+
+    var d = JSON.stringify(data);   
+    xhr.send(d);
+
+}
 
 
 document.addEventListener("DOMContentLoaded", function(event) { 
     //do work
-
+    loadDocumentData();
 });
+
+
+function auto_grow(element) {
+    element.style.height = "5px";
+    element.style.height = (element.scrollHeight)+"px";
+}

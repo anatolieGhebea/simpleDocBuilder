@@ -1,0 +1,41 @@
+{
+    "docTitle": "Manuale PPM",
+    "elements": [
+        {
+            "parentId": "docRoot",
+            "id": "chp123456",
+            "type": "chp",
+            "cnt": "Chapter 1",
+            "pos": 0
+
+        },
+        {
+            "parentId": "chp123456",
+            "id": "p12345",
+            "type": "p",
+            "cnt": "this is the first paragraph, child of root document",
+            "pos": 0
+        },
+        {
+            "parentId": "chp123456",
+            "id": "schp12345",
+            "type": "subchp",
+            "cnt": "How to create this document",
+            "pos": 1
+        },
+        {
+            "parentId": "schp12345",
+            "id": "p12345",
+            "type": "p",
+            "cnt": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut enim deleniti quos impedit quam dolorem inventore quasi natus magnam rerum et nam, adipisci ad consectetur nihil similique cum! Incidunt, cumque?",
+            "pos": 0
+        },
+        {
+            "parentId": "chp123456",
+            "id": "p1238685",
+            "type": "p",
+            "cnt": "this is the first paragraph, child of root document",
+            "pos": 0
+        }
+    ]
+}

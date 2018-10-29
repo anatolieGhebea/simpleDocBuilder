@@ -1,0 +1,75 @@
+{
+    "docTitle": "Manuale PPM",
+    "chapters": [
+        {
+            "chapter":{
+                "id": 1,
+                "chapterTitle": "",
+                "subChapters":[
+                    {
+                    "subChapter":{
+                            "id": "1-1",
+                            "subChapterTitle": "",
+                            "paragraphs":[
+                                {
+                                    "id":"1-1-1",
+                                    "text": "",
+                                    "rawHtml":""
+                                }
+                            ]        
+                        }
+                    }
+                ],
+                "paragraphs":[
+                    {
+                        "paragraph":{
+                            "id":"1-1-1",
+                            "text": "",
+                            "rawHtml":""
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "chapter":{
+                "id": 2,
+                "chapterTitle": "",
+                "subChapters":[
+                    {
+                    "subChapter":{
+                            "id": "2-1",
+                            "subChapterTitle": "",
+                            "paragraphs":[
+                                {
+                                    "id":"2-2-1",
+                                    "text": "",
+                                    "rawHtml":""
+                                }
+                            ]        
+                        }
+                    }
+                ],
+                "paragraphs":[
+                    {
+                        "paragraph":{
+                            "id":"2-1-1",
+                            "text": "",
+                            "rawHtml":""
+                        }
+                    }
+                ]
+            }
+        }
+        
+    ],
+    "paragraphs":[
+        {
+            "paragraph":{
+                "id":"1-1-1",
+                "text": "",
+                "rawHtml":""
+            }
+        }
+    ]
+}
