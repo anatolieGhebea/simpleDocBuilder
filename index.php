@@ -130,6 +130,17 @@
             border-left: 1px solid teal;
         }
 
+        p > .actionBtn.delete {
+            display:none;
+        }
+        
+        p:hover {
+            box-shadow: 1px 1px 1px #ccc;
+        }
+
+        p:hover > .actionBtn.delete{
+            display: initial;
+        }
 
         @media screen and (min-width: 64rem){
             .pgWrapper .container{

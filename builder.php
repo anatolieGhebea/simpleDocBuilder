@@ -29,22 +29,34 @@ function saveContent($data){
 
 function saveElementData($record){
     $doc = 'docs/doc.json';
+    $rec = $record['elData'];
     //check file
     if(file_exists($doc)){
         $workArray = json_decode(file_get_contents($doc),true);
 
-        if(existsRecord($record['id'], $workArray['elements'])){
+        
+        if(existsRecord($rec['id'], $workArray['elements'])){
             foreach ($workArray['elements'] as $key => &$value) {
-                if($value['id'] == $record['id'] && $value['type'] == $record['type'] ){
-                    $value['cnt'] = $record['cnt'];
-                    //for future use (change parent)
-                    $value['parentId'] = $record['parentId'];
-                    $value['pos'] = $record['pos'];
+                if($value['id'] == $rec['id'] && $value['type'] == $rec['type'] ){
+                    
+                    if($record['action']=='createUpdate'){
+                        $value['cnt'] = $rec['cnt'];
+                        //for future use (change parent)
+                        $value['parentId'] = $rec['parentId'];
+                        $value['pos'] = $rec['pos'];
+                    }else if($record['action']=='delete'){
+                        unset($workArray['elements'][$key]);
+                    }
                 }
             }
         }else{
-            $workArray['elements'][] = $record;
+            if($record['action']=='createUpdate')
+                $workArray['elements'][] = $rec;
         }
+
+        print_r($workArray);
+        array_values($workArray['elements']);
+        print_r($workArray);
 
         file_put_contents($doc, json_encode($workArray));
     }

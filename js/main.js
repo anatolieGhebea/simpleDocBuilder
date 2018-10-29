@@ -43,7 +43,7 @@ function addChapter(event, trg) {
                 inpt.setAttribute('value', cnt);
             }
             inpt.setAttribute('placeholder',"Chapter title");
-            inpt.addEventListener('blur', saveInputData);
+            inpt.addEventListener('blur', function(event){ saveInputData(event, 'createUpdate')},false);
             chapterTitle.appendChild(inpt);
             
         // add chapter title to chapter
@@ -56,6 +56,9 @@ function addChapter(event, trg) {
 
         //get action btns, 'add subchapte, add paragraph, etc'
         let btnActions = actionBtns(contentArea.id, 1);
+
+        let deleteBtn = removeElementBtn(id, 'Delete section and all contained subsections and paragraphs','Delete Section');//get btn "template"
+        btnActions.appendChild(deleteBtn);
 
         chapter.appendChild(btnActions);
 
@@ -102,7 +105,7 @@ function addSubChapter(event, trg) {
                 inpt.setAttribute('value', cnt);
             }
             inpt.setAttribute('placeholder'," subChapter title"); 
-            inpt.addEventListener('blur', saveInputData);
+            inpt.addEventListener('blur', function(event){ saveInputData(event, 'createUpdate')},false);
             subChapterTitle.appendChild(inpt);
         
         // add chapter title to chapter
@@ -119,8 +122,7 @@ function addSubChapter(event, trg) {
         let btnActions = actionBtns(contentArea.id, 2);
 
         // add delete Btn
-        let deleteBtn = removeElementBtn();//get btn "template"
-        deleteBtn.setAttribute('data-delete-target', id);
+        let deleteBtn = removeElementBtn(id, 'Delete subsection and all contained paragraphs','Delete Subsection');//get btn "template"
         btnActions.appendChild(deleteBtn);
 
         subChapter.appendChild(btnActions);
@@ -159,13 +161,20 @@ function addParagraph(event, trg) {
     }
     txt.setAttribute('placeholder','Insert your text here...');
     txt.setAttribute('onkeyup',"auto_grow(this)");
-    txt.addEventListener('blur', saveInputData);
+    txt.addEventListener('blur', function(event){ saveInputData(event, 'createUpdate')},false);
 
     prgInput.appendChild(txt);
+
+    let deleteBtn = removeElementBtn(id, 'Delete paragraph','Delete Paragraph');//get btn "template"
+    prgInput.appendChild(deleteBtn);
 
     parent.appendChild(prgInput);
 }
 
+
+function deleteElement(event){
+    saveInputData(event,'delete');
+}
 
 
 /**
@@ -216,9 +225,10 @@ function paragraphBtn(parentTarget){
 }
 
 function removeElementBtn(target, title, innerValue){
+
     let btn = document.createElement('button');
     btn.classList = 'actionBtn delete';
-    btn.setAttribute('data-parent-chapter', target );
+    btn.setAttribute('data-delete-target', target );
     btn.setAttribute('onclick','deleteElement(event)');
     btn.setAttribute('name','Delete');
     btn.setAttribute('title',title);
@@ -230,6 +240,8 @@ function removeElementBtn(target, title, innerValue){
 
 function buildWorkingPage(data){
     var cmp = data.elements;
+    console.log(cmp);
+    
     //set document title
     document.getElementById('docTitle').setAttribute('value', data.docTitle);
     //generate documento form json
@@ -237,19 +249,13 @@ function buildWorkingPage(data){
         switch(element.type){
             case "chp": 
                 addChapter(null, element);
-                console.log('adding chapter');
-
                 break;
             case "subchp":
-                console.log('adding subchapter');
                 addSubChapter(null, element);
-
                 break;
             case "p":
-                console.log('add parag..');
                 addParagraph(null, element);
                 break;
-            
             default:
                 break;
         } 
@@ -291,13 +297,17 @@ function loadDocumentData() {
 } 
 
 
-function saveInputData(event){
+function saveInputData(event, action){
+
+    if(action === null || !(action == 'createUpdate' || action == 'delete'))
+        return false;
     
     let parent = event.target.parentNode;
     // get element type 
     let elemnetType = null;
     let parentId = null;
     let id = null;
+    
     switch (parent.nodeName) {
         case 'H2':
             elemnetType = 'chp';
@@ -318,15 +328,33 @@ function saveInputData(event){
         default:
             break;
     }
-     
+    
+    if(action == 'delete'){
+        id = event.target.getAttribute('data-delete-target');
+        console.log(typeof(id));
+        
+        if(id.indexOf('chp')== 0){
+            elemnetType = 'chp';
+        }else if(id.indexOf('schp')== 0){
+            elemnetType = 'subchp';
+        }else if(id.indexOf('p')== 0){
+            elemnetType = 'p';
+        }else{
+            elemnetType = null;
+        }
+    }
+
     let dataContent = event.target.value;
 
     let sendable = {
-        'parentId': parentId,
-        'id': id,
-        'type': elemnetType,
-        'cnt': dataContent,
-        'pos': 0
+        'action':action,
+        'elData':{
+            'parentId': parentId,
+            'id': id,
+            'type': elemnetType,
+            'cnt': dataContent,
+            'pos': 0
+        }
     };
 
     //console.log(sendable);
