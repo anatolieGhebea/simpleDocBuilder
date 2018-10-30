@@ -93,8 +93,8 @@
             page-break-after: avoid;
         }
         h3 {
-            padding-top: 18pt;
-            padding-bottom: 6pt;
+            padding-top: 8pt;
+            padding-bottom: 4pt;
         }
 
         h3 > input {
