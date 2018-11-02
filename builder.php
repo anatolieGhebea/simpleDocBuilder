@@ -1,6 +1,5 @@
 
 <?php 
-include_once('util.php');
 
 /* app code */
 function getContent(){
