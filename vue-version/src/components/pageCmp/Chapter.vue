@@ -1,5 +1,6 @@
 <template>
     <div v-bind:id="chapter.id" class="chapterWrapper wrapper">
+        <p>some dummy text</p>
         <h2 class="chapterTitle"><input :value="chapter.cnt"></h2>
 
         <div :id="cntId" class="cnt">
@@ -23,6 +24,8 @@ export default {
 
     created (){
         this.cntId = this.newId();
+        console.log('cr');
+        
     }  
     
 }

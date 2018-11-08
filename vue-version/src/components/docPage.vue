@@ -2,32 +2,9 @@
     <div class="docRoot" id="docRoot">
         <h1><input type="text" id="docTitle" placeholder="Document title..." v-model="docTitle"> </h1>
 
-        <div>
-            <ul>
-                <li v-for="el in elementTreeList" :key="el.id"> 
-                    {{ el.id }} <br> 
-                    {{ el.cnt }} 
-                    <ul>
-                        <li v-for="l in el.elements" :key="l.id">
-                            {{ l.id }} <br>
-                            {{ l.cnt }}
-                        </li>
-                    </ul>
-                    <hr> 
-                
-                </li>
-            </ul>
-        </div>
-
-<!--         <div v-for="el in elementList" :key="el.id">
-            <chapter v-if="el.type=='chp'" :chapter="el"></chapter>
-
-            <paragraph v-if="el.type=='p'" :paragraph="el"></paragraph>
-        </div> -->
-
+        <!-- <chapter v-for="el in elementList" :key="el.id" :chapter="el"></chapter> -->
+        
     </div>
-
-
 </template>
 <script>
 
@@ -63,12 +40,6 @@ export default {
                 }
                 
             }     
-
-            console.log(l);
-            console.log(elementList.length);
-            
-
-            console.log(tree);
             
             if(l.count == elementList.length){
                 this.elementTreeList = tree;
@@ -77,8 +48,7 @@ export default {
                 // convert this return to Warrning 
                 return false;
             }
-            
-            
+             
         },
 
         addChild (child, tree, l){
@@ -92,7 +62,6 @@ export default {
                     }                    
                     if( child.elements == undefined ){
                         console.log('add ch.el');
-                        
                         child.elements = [];
                     }
 
@@ -108,6 +77,46 @@ export default {
             }
             
             return tree;
+        },
+
+        genHtml (){
+            console.log(this.$el);
+            console.log(this.elementList.length);
+            
+            for (var i = 0; i < this.elementList.length; i++) {
+                var tp = '';
+                var tpp = null;
+                console.log('before switch');
+                
+                switch (this.elementList[i].type) {
+                    case 'chp':
+                        tp = 'chapter :'+ this.elementList[i].id +' => '+this.elementList[i].id;
+                        tpp = 'chapter';
+                        break;
+                    case 'subchp':
+                        tp = 'subchapter :'+ this.elementList[i].id +' => '+this.elementList[i].id;
+                        tpp = 'subchapter';
+                        break;
+                    case 'p':
+                        tp = 'paragraph :'+ this.elementList[i].id +' => '+this.elementList[i].id;
+                        tpp = 'paragraph';
+                        break;
+                
+                    default:
+                        break;
+                }
+                console.log('=========');
+                
+                var child = document.createElement(tpp);
+                child.setAttribute(':'+tpp, (this.elementList[i])  );
+                
+                //child.innerHTML = tp;
+
+                console.log(child);
+                
+
+                this.$el.appendChild(child);
+            }
         }
 
 
@@ -121,7 +130,8 @@ export default {
                 this.docTitle = r.docTitle;
                 this.elementList = r.elements;
 
-                this.convertToTree(this.elementList);
+               // this.convertToTree(this.elementList);
+               this.genHtml();
             })
             .catch(function(e){
                 console.log( 'Some Error' + e);
