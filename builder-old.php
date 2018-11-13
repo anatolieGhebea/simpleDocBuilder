@@ -55,16 +55,8 @@ function saveElementData($record){
 
         // set alla array keys like 0,1,2,3,....
         $workArray['elements'] = array_values($workArray['elements']);
-        
-        //test
-        header('Content-Type: application/json');
-        
+    
         file_put_contents($doc, json_encode($workArray));
-        // $docFile = fopen($doc, 'w');
-        // $r = fwrite($docFile, json_encode($workArray));
-        // fclose($docFile);
-        
-        // echo json_encode([$docFile, $r]);
     }
 
 }

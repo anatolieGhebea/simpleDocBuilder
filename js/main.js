@@ -1,12 +1,6 @@
 
 var tmpHolder;
 
-// function
-(function(){
-    console.log('hello')
-
-})();
-
 function addChapter(event, trg) {
     // get html element id
     let target = null;
