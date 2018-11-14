@@ -19,7 +19,7 @@ page.appendChild(addSectionBtn);
  */
 function getActionBtns(parentTarget, parentType) {
 
-    let btns = [];
+    let btns = []; 
     let ok = true;
     switch(parentType){
         case 'sec':
