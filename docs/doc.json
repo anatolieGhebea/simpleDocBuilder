@@ -1,19 +1,6 @@
 {
     "docTitle": "Manuale PPM",
     "elements": [
-        {
-<<<<<<< HEAD
-            "parentId": "subsec1542060535",
-            "id": "p1542060539",
-            "type": "p",
-            "cnt": "asdasda\n",
-=======
-            "parentId": "docRoot",
-            "id": "sec1542020799",
-            "type": "sec",
-            "cnt": "New chapter",
->>>>>>> a649d9314e51057d5bc4e51279c907d3ae3ebfa7
-            "pos": 0
-        }
+
     ]
 }
