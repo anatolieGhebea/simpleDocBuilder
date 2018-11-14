@@ -110,13 +110,15 @@ function newParagraph(event, trg){
     parent.querySelector('.cnt').appendChild(p.htmlElem);
     return;
 }
+
 function RemoveElement(event) {
+    saveInputData(event,'delete');
+    let el = document.getElementById(event.target.getAttribute('data-delete-target'));
+    el.parentNode.removeChild(el);
     return;
 }
 
-function buildWorkingPage(data){
-    console.log(data);
-    
+function composeDevPage(data){
     var cmp = data.elements;
     console.log(cmp);
     
@@ -222,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     // @todo => find a better way todo this
     function lookForResp(){        
         if(typeof resp.data !== 'null' && typeof resp.data !== 'undefined'){
-            buildWorkingPage(resp.data);
+            composeDevPage(resp.data);
             clearInterval(itervalId);
         }
     }

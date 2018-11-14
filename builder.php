@@ -44,8 +44,25 @@ function saveElementData($record){
                         $value['parentId'] = $rec['parentId'];
                         $value['pos'] = $rec['pos'];
                     }
-                }else if($record['action']=='delete' && ($value['id'] == $rec['id'] || $value['parentId'] == $rec['id'] )){
-                    unset($workArray['elements'][$key]);
+                }else if($record['action']=='delete'){
+                    $curentId = null;
+                    
+                    if($value['id'] == $rec['id'] || $value['parentId'] == $rec['id'] ){
+                        $curentId = $value['id'];
+                        echo 'unset1'.$value['id'];
+                        unset($workArray['elements'][$key]);
+
+                    }
+                    
+                    if($curentId !== null){
+                        //recursively remove elements that has parentId == to correntId that's beeing removed
+                        foreach($workArray['elements'] as $k => &$val){
+                            if($val['parentId'] == $curentId){
+                                unset($workArray['elements'][$k]);
+                                echo 'unset2'.$val['id'];
+                            } 
+                        }
+                    }
                 }
             }
         }else{
