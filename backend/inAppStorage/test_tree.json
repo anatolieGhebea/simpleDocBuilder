@@ -1,0 +1,56 @@
+{
+    "docTitle": "Tree structure code refactoring",
+    "docVersion": "1.0.0",
+    "docLang": "en",
+    "ids": [],
+    "pageElements": {
+        "section_1": {
+            "title": "Title modified for section on 887",
+            "section_1-subsection_1": {
+                "title": "first sub section",
+                "section_1-subsection_1-paragraph_1": {
+                    "content": "this is the content of paragraph one in sub section one"
+                },
+                "section_1-subsection_1-paragraph_2": {
+                    "content": "this is the content of paragraph two in sub section one"
+                }
+            },
+            "section_1-paragraph_1": {
+                "content": "this is the first p in section 1"
+            },
+            "section_1-subsection_2": {
+                "title": "T sub sec 2 sec 1",
+                "section_1-subsection_2-paragraph_1": {
+                    "content": "first in subsectione 2"
+                },
+                "section_1-subsection_2-paragraph_2": {
+                    "content": "some dummy text here"
+                }
+            },
+            "section_1-paragraph_2": {
+                "content": "second in sectione 1"
+            },
+            "section_1-subsection_3": {
+                "title": "T sub sec 3 sec 1"
+            }
+        },
+        "section_2": {
+            "title": "title",
+            "section_2-subsection_1": {
+                "title": "first sub section",
+                "section_2-subsection_1-paragraph_1": {
+                    "content": "this is the content of paragraph one in sub section one"
+                }
+            },
+            "section_2-paragraph_1": {
+                "content": "this is the first p in section 1"
+            }
+        },
+        "section_3": {
+            "title": "Title modified for section on 887",
+            "section_3-subsection_1": {
+                "title": "T sub sec 3 sec 3"
+            }
+        }
+    }
+}

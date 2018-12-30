@@ -10,7 +10,7 @@ var fs = require('fs')
 
 function StorageInterface(storageType, fileName, filePath){
     this.type = storageType || 'local';
-    this.fileName = fileName || 'test.json';
+    this.fileName = fileName || 'test_tree.json';
     this.filePath = filePath || path.join(__dirname, '../inAppStorage');
     this.workingFile = this.filePath+'/'+ this.fileName;
 
@@ -94,24 +94,55 @@ StorageInterface.prototype.addElement = function(elData) {
     }
 
     if(fileData !== null){
-        elements = fileData.elements;
+        elements = fileData.pageElements;
     }
 
     // add element to array
-    if(elements !== null ){
-        //@TODO do some checking before adding elements
+    if(elements !== null ){        
+        // split incoming id
+        let hierarchy = elData.id.split("-");
 
-        let elIndex = this.elPosition(elements, elData.id);
+        console.log(hierarchy);
+        let hl = hierarchy.length;
+        if(hl == 1){
+            // section is beeing modified, index 'title' is always present
+            if(typeof elements[elData.id] === 'undefined' ){
+                elements[elData.id] = {"title":elData.cnt};                    
+            }else
+                elements[elData.id]['title'] = elData.cnt;
+        }else if(hl == 2){
+            // 2 posibbilities: subsection update or paragraph update
+            let key = hierarchy[1];
 
-        //if element exists, override
-        if(elIndex !== false)
-            elements[elIndex] = elData;
-        else
-            // element doesn't exist, add 
-            elements.push(elData);
+            if(key.indexOf('subsection') > -1){
+                // it's a subsection
+                if(typeof elements[hierarchy[0]][elData.id] === 'undefined' ){
+                    elements[hierarchy[0]][elData.id] = {"title":elData.cnt};                    
+                }else
+                    elements[hierarchy[0]][elData.id]['title'] = elData.cnt;
+            }else if( key.indexOf('paragraph') > -1){
+                // it's a paragraph
+                if(typeof elements[hierarchy[0]][elData.id] === 'undefined' ){
+                    elements[hierarchy[0]][elData.id] = {"content":elData.cnt};                    
+                }else
+                    elements[hierarchy[0]][elData.id]['content'] = elData.cnt;  
+            }else{
+                // error
+                ok = false;
+            }
+
+        }else if(hl == 3){
+            // third level paragraph is beeing updated
+            console.log('hey');
+            
+            elements[hierarchy[0]][hierarchy[0]+'-'+hierarchy[1]][elData.id]['content'] = elData.cnt;
+        }else{
+            console.log('invalid key hierarchy');
+            ok = false;
+        }
 
         // rewrite to file
-        fileData.elements = elements;
+        fileData.pageElements = elements;
         try{
             fs.writeFileSync(this.workingFile, JSON.stringify(fileData));    
         }catch (e){
@@ -119,8 +150,6 @@ StorageInterface.prototype.addElement = function(elData) {
             ok = false;
         }
     }
-
-    
 
     return ok;
 }
@@ -145,52 +174,35 @@ StorageInterface.prototype.rmElement = function(elData) {
     }
 
     if(fileData !== null){
-        elements = fileData.elements;
+        elements = fileData.pageElements;
 
-        let elPos = this.elPosition(elements, elData.id);
-
-        if(elPos !== false){
-            
-            let childsIndex = this.childIndexes(elements, elData.id);
-            console.log(childsIndex);
-
-            // if no childs found, skip the following code
-            if(typeof childsIndex !== 'null' && typeof childsIndex !== 'undefined' && childsIndex.length > 0 ){
-                // indexes must be in desc order 7,6,3,2,... 
-                // because elements.splice(idx, 1) will cause array to be shorter 
-                // shifting all elements to left causing index missmatch 
-                // by descending order we are simulating a pop function in array
-                function sortNumber(a,b) {
-                    return b - a;
-                }
-                childsIndex.sort(sortNumber);
-
-                // remove childs
-                childsIndex.forEach(idx =>{
-                    // just to be sure that index is a positive number
-                    if(idx > -1){
-                        console.log('rm :'+idx);
-                        elements.splice(idx, 1);
-                    }
-                });
-
-            }
-
-            // finally remove the intended element 
-            elements.splice(elPos, 1)
-                        
-            // rewrite to file
-            fileData.elements = elements;
-            try{
-                fs.writeFileSync(this.workingFile, JSON.stringify(fileData));    
-            }catch (e){
-                console.log("Cannot write file ", e);
+        let hierarchy = elData.id.split("-");
+        let hl = hierarchy.length;
+        switch (hl) {
+            case 1:
+                // first leve
+                delete elements[elData.id];
+                break;
+            case 2:
+                delete elements[hierarchy[0]][elData.id];
+                break;
+            case 3:
+                delete elements[hierarchy[0]][hierarchy[0]+'-'+hierarchy[1]][elData.id];
+                break;
+            default:
+                console.log('invalid key hierarchy');
                 ok = false;
-            }
-        }else{
-            ok = false;
+                break;
         }
 
+        // rewrite to file
+        fileData.pageElements = elements;
+        try{
+            fs.writeFileSync(this.workingFile, JSON.stringify(fileData));    
+        }catch (e){
+            console.log("Cannot write file ", e);
+            ok = false;
+        }
     }else{
         ok = false;
     }
@@ -201,33 +213,10 @@ StorageInterface.prototype.rmElement = function(elData) {
 /**
  * Returns element index or false (if element doesn't exist)
  */
-StorageInterface.prototype.elPosition = function(elements, elId) {
-    var index = false;
-    elements.forEach((element, i) => {        
-        if(element.id == elId){
-            index = i;
-        }
-    });
-    return index;
+StorageInterface.prototype.someFunc = function() {
+    //@todo implement
+    return false;
 }
-/**
- * Returns element index or false (if element doesn't exist)
- */
-StorageInterface.prototype.childIndexes = function(elements, parentId, indexes) {
-    var indexes = indexes || [];
 
-    elements.forEach((element, i) => {
-        if(element.parentId == parentId){
-            
-            // this el is child of the element being removed, 
-            // add his index to the list of the elements to remove
-            // than check if has childs
-            indexes.push(i);
-            indexes = this.childIndexes(elements, element.id, indexes);
-        }
-    });
-
-    return indexes;
-}
 
 module.exports = StorageInterface;
