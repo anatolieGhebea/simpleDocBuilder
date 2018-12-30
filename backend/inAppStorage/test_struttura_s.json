@@ -1,0 +1,54 @@
+{
+    "base": {
+        "section_1": {
+            "type":"section",
+            "title":"title",
+            "subsection1-1": {
+                "paragraph1-1-1": {
+                    "content": ""
+                },
+                "paragraph1-1-2": {
+                    "content": ""
+                }
+            },
+            "subsection1-2": {
+                "paragraph1-2-1": {
+                    "content": ""
+                },
+                "paragraph1-2-2": {
+                    "content": ""
+                }
+            },
+            "paragraph1-1": {
+                "content": ""
+            },
+            "paragraph1-2": {
+                "content": ""
+            }
+        },
+        "section2": {
+            "subsection2-1": {
+                "paragraph2-1-1": {
+                    "content": ""
+                },
+                "paragraph2-1-2": {
+                    "content": ""
+                }
+            },
+            "subsection2-2": {
+                "paragraph2-2-1": {
+                    "content": ""
+                },
+                "paragraph2-2-2": {
+                    "content": ""
+                }
+            },
+            "paragraph2-1": {
+                "content": ""
+            },
+            "paragraph2-2": {
+                "content": ""
+            }
+        }
+    }
+}

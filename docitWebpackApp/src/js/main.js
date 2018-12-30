@@ -149,7 +149,7 @@ function composeDevPage(data){
 }
 
 
-function saveInputData(event, action){
+function saveInputDataOld(event, action){
 
     if(action === null || !(action == 'createUpdate' || action == 'delete'))
         return false;
@@ -215,15 +215,90 @@ function saveInputData(event, action){
     
 }
 
+function saveInputData(event, action){
+console.log(action);
+
+    if(action === null || !(action == 'createUpdate' || action == 'delete' || action == 'swap'))
+        return false;
+    
+    let parent = event.target.parentNode;
+    // get element type 
+    let elemnetType = null;
+    let parentId = null;
+    let id = null;
+    
+    switch (parent.nodeName) {
+        case 'H2':
+            elemnetType = 'sec';
+            id = parent.closest('div.wrapper').getAttribute('id');
+            parentId =  parent.closest('div.wrapper').parentNode.getAttribute('id');
+            break;
+        case 'H3':
+            elemnetType = 'subsec';
+            id = parent.closest('div.wrapper').getAttribute('id');
+            parentId = event.target.closest('div.wrapper').parentNode.closest('div.wrapper').getAttribute('id');
+            break;
+        case 'P':
+            elemnetType = 'p';
+            id = parent.getAttribute('id');
+            parentId = event.target.closest('div.wrapper').getAttribute('id');
+            break;
+    
+        default:
+            break;
+    }
+    
+    if(action == 'delete'){
+        id = event.target.getAttribute('data-delete-target');
+        console.log(typeof(id));
+        
+        if(id.indexOf('sec')== 0){
+            elemnetType = 'sec';
+        }else if(id.indexOf('subsec')== 0){
+            elemnetType = 'subsec';
+        }else if(id.indexOf('p')== 0){
+            elemnetType = 'p';
+        }else{
+            elemnetType = null;
+        }
+    }
+
+    let dataContent = event.target.value;
+
+    let sendable = {
+        "action":action,
+        "elData":{
+            "parentId": parentId,
+            "id": id,
+            "type": elemnetType,
+            "cnt": dataContent,
+            "pos": 0
+        }
+    };
+
+    //console.log(sendable);
+    //send data to server
+    // let addr = '/'+action+'/'+JSON.stringify(sendable);
+    let url = '/'+action;
+    console.log(url);
+    
+    // var resp = { "data":null }; 
+    // Serv.urlPost(addr, resp);
+
+    Serv.sendDataToServer(url, sendable);
+    
+}
+
 
 document.addEventListener("DOMContentLoaded", function(event) { 
     //do work
     var resp = { "data":null };
-    Serv.loadDocumentData("/simpleDocBuilder/builder.php", resp);
+    Serv.loadDocumentData("/rawJson", resp);
 
     // @todo => find a better way todo this
     function lookForResp(){        
         if(typeof resp.data !== 'null' && typeof resp.data !== 'undefined'){
+            console.log(resp);
             composeDevPage(resp.data);
             clearInterval(itervalId);
         }

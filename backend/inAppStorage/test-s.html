@@ -1,0 +1,16 @@
+<div *ngFor="let element of elements">
+
+
+    <custom-section *ngFor="let element of elements"></custom-section>
+
+    <button onclick="handler(element.id)"/>
+    <div *ngIf="element.id=='section'">
+
+    </div>
+    <div *ngIf="element.id=='subection'">
+        
+    </div>
+</div>
+
+
+<input type="text" (blur)="isInputBlurred($event)">

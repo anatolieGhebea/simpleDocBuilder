@@ -7,7 +7,21 @@ module.exports = {
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var rs = JSON.parse(this.responseText);
-                //console.log(rs);
+                //buildWorkingPage(rs);
+                resp.data = rs;
+            }
+        };
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    },
+    urlPost(url, resp) {
+        //load json file with data from server
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var rs = JSON.parse(this.responseText);
+                
+                console.log(rs);
                 //buildWorkingPage(rs);
                 resp.data = rs;
             }
