@@ -82,6 +82,13 @@ StorageInterface.prototype.addElement = function(elData) {
     // @todo Implement a better way of doing this operations
     //
 
+    // check for valid id
+    if(elData.id.indexOf("section") < 0 && elData.id.indexOf("subsection") < 0 && elData.id.indexOf("paragraph") < 0){
+        console.log('invalid key: '+elData.id);
+        return false;
+    }
+
+
     // load file 
     let fileData = null;
     let elements = null;
@@ -134,8 +141,11 @@ StorageInterface.prototype.addElement = function(elData) {
         }else if(hl == 3){
             // third level paragraph is beeing updated
             console.log('hey');
-            
-            elements[hierarchy[0]][hierarchy[0]+'-'+hierarchy[1]][elData.id]['content'] = elData.cnt;
+            if(typeof elements[hierarchy[0]][hierarchy[0]+'-'+hierarchy[1]][elData.id] === 'undefined' ){
+                elements[hierarchy[0]][hierarchy[0]+'-'+hierarchy[1]][elData.id] = {"content":elData.cnt};                    
+            }else
+                elements[hierarchy[0]][hierarchy[0]+'-'+hierarchy[1]][elData.id]['content'] = elData.cnt;
+
         }else{
             console.log('invalid key hierarchy');
             ok = false;

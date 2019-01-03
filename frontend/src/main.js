@@ -3,8 +3,15 @@ import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
 import './registerServiceWorker'
+import VueResource from 'vue-resource';
 
 Vue.config.productionTip = false
+
+Vue.use(VueResource);
+// Vue.use(Auth);
+
+// Vue.http.options.root = "http://localhost:8080";
+
 
 new Vue({
   router,
