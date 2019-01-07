@@ -228,5 +228,4 @@ StorageInterface.prototype.someFunc = function() {
     return false;
 }
 
-
 module.exports = StorageInterface;

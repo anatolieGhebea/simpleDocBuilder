@@ -58,12 +58,10 @@
                         
                         <ul>
                             <li v-for="(sec, key) in this.elements" :key="key">
-                                {{ sec.title }}
-                                <ul>
-                                    <li v-for="(subsec, key1) in sec" :key="key1" >
-                                        <div v-if="isSubSection(key1)">
-                                            {{ subsec.title }}
-                                        </div>
+                                <a v-bind:href="'#'+key" >{{ sec.title }} </a>
+                                <ul >
+                                    <li v-for="(subsec, key1) in  subsecOf(sec)" :key="key1"  >
+                                        <a v-bind:href="'#'+key1" >{{ subsec.title }} </a>
                                     </li>
                                 </ul>
                             </li> 
@@ -284,6 +282,15 @@ export default {
         isParagrph(key){
             return  key.indexOf('paragraph') > -1 ? true: false;
         }, 
+        subsecOf(sec){
+            let l = {};
+            for (var k in sec){
+                if(sec.hasOwnProperty(k) && this.isSubSection(k)){
+                    l[k]= sec[k];  
+                }
+            }
+            return l;
+        },
         updateEl(e){
             // console.log('blur');
             // console.log(e.target.value);
@@ -558,7 +565,9 @@ export default {
         padding: 5px;
         overflow-y: hidden;
     }
-
+    .editor .edit-col textarea:focus {
+        border-left: 1px dashed blueviolet;
+    }
 
 
 </style>

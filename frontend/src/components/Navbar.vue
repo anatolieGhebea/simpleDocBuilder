@@ -39,6 +39,7 @@ export default {
             drawerLinks: [
                 { icon:"dashboard", text: "Dashboard", path:"/"},
                 { icon:"edit", text: "Editor", path:"/editor"},
+                { icon:"remove_red_eye", text: "Preview", path:"/preview"},
                 { icon:"more_vert", text: "More", path:"/more"}
             ]
         }
