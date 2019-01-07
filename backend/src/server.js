@@ -14,18 +14,28 @@ var path = require('path');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
-//var app = express();
+
+// dev only part
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
 // get the api routes from routes.js
 require('./routes.js')(app);
 
 // set up a static file server that points to the "$folder" directory
 // app.use(express.static(path.join(__dirname, '../dist')));
-app.use(express.static(path.join(__dirname, '../../docitWebpackApp/dist')));
 
+// let fold = path.join(__dirname, '../../frontend/dist');
+// console.log(fold);
+// app.use(express.static(fold));
+
+// app.use(express.static(path.join(__dirname, '../../docitWebpackApp/dist')));
 
 // server port 
-var port = 80;
+var port = 8080;
 
 // start the server
 app.listen(port, function(){
