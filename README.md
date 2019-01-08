@@ -1,6 +1,6 @@
 # docit
 
-This is a simple application tool that let's people write documents in simple text maner, as if writing in MS Word or Google Doc. Than easily export the document as one of the following formats:
+This is a simple application tool that let's people write documents in simple text manner, as if writing in MS Word or Google Doc. Then easily export the document in one of the following formats:
 
 - [ ] html: Ready to use, load the content of the arichive on your server and you are good to go
 - [ ] pdf
@@ -40,7 +40,7 @@ run
 ```
 npm install 
 ```
-to install the dependencies, and than run 
+to install the dependencies, and then run 
 
 ```
 npm serve
