@@ -14,7 +14,6 @@ in your terminal move to backend folder
 
 ``` 
 cd simpleDocBuilder/backend/ 
-
 ```
 
 then run 
@@ -34,18 +33,15 @@ open a new terminal window, and go to the frontend folder
 
 ```
 cd simpleDocBuilder/frontend/
-
 ```
 
 run 
 
 ```
 npm install 
-
 ```
 to install the dependencies, and than run 
 
 ```
 npm serve
-
 ```
