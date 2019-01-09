@@ -245,7 +245,8 @@ export default {
             paragraph: 'p',
             rootDoc: 'rootDocument',
             //
-            baseRoot:"http://localhost:8080",
+            // baseRoot:"http://localhost:8080",
+            baseRoot: this.$hostname +':'+this.$hostnameport,
             docTitle: "",
             docVersion: "",
             docLang: "",
@@ -255,7 +256,7 @@ export default {
     },
     methods:{
         getData(){
-            
+            /* eslint-disable */    
             this.$http.get(this.baseRoot+'/rawJson')
             .then(response =>{
                 let res = response.body;

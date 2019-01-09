@@ -11,7 +11,8 @@ Vue.use(VueResource);
 // Vue.use(Auth);
 
 // Vue.http.options.root = "http://localhost:8080";
-
+Vue.prototype.$hostname = 'http://localhost';
+Vue.prototype.$hostnameport = '9092';
 
 new Vue({
   router,
