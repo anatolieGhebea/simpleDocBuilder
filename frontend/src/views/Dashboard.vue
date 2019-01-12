@@ -24,14 +24,14 @@
       </v-layout>
 
 
-      <v-card flat v-for="project in projects" :key="project.name" > 
+      <v-card flat v-for="project in projects" :key="project.name" route :to="{name:'editor', params:{docID:project.docID } }" > 
         
         <!-- row definition -->
         <v-layout row wrap :class="`pa-3 project ${project.status}`">
           <!-- v-flex as column -->
           <v-flex xs12 sm12 md6>
             <div class="capition grey--text">Project title</div>
-            <div>{{ project.name }}</div>
+            <div>{{ project.name }} </div>
           </v-flex>
           <v-flex xs4 sm4 md2>
             <div class="capition grey--text">Person</div>
@@ -65,9 +65,9 @@
     data(){
         return {
             projects: [
-                { name:"first project in the list", person:"Mario", due:"1st Mar 2019", status:"ongoing" },
-                { name:"second project in the list", person:"Pippo", due:"1st Jan 2019", status:"overdue" },
-                { name:"third project in the list", person:"Pluto", due:"1st Mar 2019", status:"done" }
+                { docID: 'test_tree', name:"File one", person:"Mario", due:"1st Mar 2019", status:"ongoing" },
+                { docID: 'test_tree_b', name:"File two", person:"Pippo", due:"1st Jan 2019", status:"overdue" },
+                { docID: '129', name:"File three", person:"Pluto", due:"1st Mar 2019", status:"done" }
             ]
         }
     },

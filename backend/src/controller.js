@@ -1,16 +1,25 @@
 'use strict';
 
 var StorageInterface = require('./storageInterface');
-// var storage = new StorageInterface(null, 'testOne.json', null);
-var storage = new StorageInterface();
+var fileStorage = require('./storageInterface')('file');
 
+// var storage = new StorageInterface(null, 'testOne.json', null);
+// var storage = new StorageInterface();
+
+//@todo review this file
 module.exports = (function () {
     return {
+        getStorage(storageType, fileName, filePath){            
+            return new StorageInterface(storageType); //, fileName, filePath);
+        },
         createUpdate: function (req, res) {
             // incoming data
+            let fname = req.params.docID+'.json';
+            let storage = this.getStorage(null, fname);
+            
             let reqData = req.body; 
             
-            let r = storage.addElement(reqData.elData);
+            let r = storage.addElement(reqData.elData, fname);
             if(r)
                 res.json({msg:"ok" });
             else
@@ -22,6 +31,9 @@ module.exports = (function () {
         },
         del: function (req, res) {
             // incoming data
+            let fname = req.params.docID+'.json';
+            let storage = this.getStorage(null, fname);
+
             let reqData = req.body; 
             
             let r = storage.rmElement(reqData.elData);
@@ -31,9 +43,16 @@ module.exports = (function () {
                 res.json({msg:"error in adding element" });
         },
         rawJson: function (req, res) {
-            console.log('rawFile req.......');
+            
+            let fname = req.params.docID+'.json';
+
+            if(fname !== undefined){
+                let storage = this.getStorage(null, fname);
+                res.json(storage.getRawFile());
+            }else
+                res.json({msg:"error in adding element" });
+
             // res.json({msg:"Not Implemented" });
-            res.json(storage.getRawFile());
             console.log('...Done!');
         },
     }

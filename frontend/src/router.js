@@ -14,7 +14,7 @@ export default new Router({
       component: Dashboard
     },
     {
-      path: '/editor',
+      path: '/editor/:docID',
       name: 'editor',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route

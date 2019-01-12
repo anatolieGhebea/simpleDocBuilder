@@ -1,7 +1,7 @@
 'use strict';
 
 var path = require('path')
-var os = require('os')
+// var os = require('os')
 var fs = require('fs')
 
 // default varaibles
@@ -58,7 +58,9 @@ StorageInterface.prototype.createBaseFile = function(override){
     }else{
         console.log('file exist, use createFile(true) to override');    
     }
-    return ok;
+
+    return {res: ok, msg: "bablblabla"};
+    //return ok;
 }
 
 

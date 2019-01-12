@@ -257,7 +257,8 @@ export default {
     methods:{
         getData(){
             /* eslint-disable */    
-            this.$http.get(this.baseRoot+'/rawJson')
+            console.log(this.$route.params.docID);
+            this.$http.get(this.baseRoot+'/rawJson/'+this.$route.params.docID)
             .then(response =>{
                 let res = response.body;
                 this.docTitle = res.docTitle;
@@ -376,8 +377,8 @@ export default {
                     "id": key
                 } 
             };
-            
-            this.$http.post(this.baseRoot+'/'+action, sendable)
+            console.log(this.$route.params.docID);          
+            this.$http.post(this.baseRoot+'/'+action+'/'+this.$route.params.docID, sendable)
                 .then(function(response){
                     // console.log(response);
                     // this.$router.push('/feed');
@@ -407,8 +408,9 @@ export default {
             //     }
             // };
 
-            let action = "createUpdate";            
-            this.$http.post(this.baseRoot+'/'+action, sendable)
+            let action = "createUpdate";  
+            console.log(this.$route.params.docID);          
+            this.$http.post(this.baseRoot+'/'+action+'/'+this.$route.params.docID, sendable)
                 .then(function(response){
                     // console.log(response);
                     this.showMsg(response.body.msg);

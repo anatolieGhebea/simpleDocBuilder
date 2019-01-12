@@ -35,7 +35,7 @@ require('./routes.js')(app);
 // app.use(express.static(path.join(__dirname, '../../docitWebpackApp/dist')));
 
 // server port 
-var port = 9092;
+var port = 8080;
 
 // start the server
 app.listen(port, function(){
