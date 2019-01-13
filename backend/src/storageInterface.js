@@ -8,14 +8,23 @@ var fs = require('fs')
 // var storageType = 'local';
 // var fileName = 'test.josn';
 
-function StorageInterface(storageType, fileName, filePath){
-    this.type = storageType || 'local';
+// function StorageInterface(storageType, fileName, filePath){
+//     this.type = storageType || 'local';
+//     this.fileName = fileName || 'test_tree.json';
+//     this.filePath = filePath || path.join(__dirname, '../inAppStorage');
+//     this.workingFile = this.filePath+'/'+ this.fileName;
+
+//     console.log('loading storage with type:'+this.type+' path:'+this.filePath+' file:'+this.fileName);
+//     this.createBaseFile();
+// }
+function StorageInterface(fileName, filePath){
+    
     this.fileName = fileName || 'test_tree.json';
     this.filePath = filePath || path.join(__dirname, '../inAppStorage');
     this.workingFile = this.filePath+'/'+ this.fileName;
 
     console.log('loading storage with type:'+this.type+' path:'+this.filePath+' file:'+this.fileName);
-    this.createBaseFile();
+    // this.createBaseFile();
 }
 
 StorageInterface.prototype.existFile = function(){
@@ -43,7 +52,7 @@ StorageInterface.prototype.createBaseFile = function(override){
         console.log('creating.....');
 
         let baseContent = {
-            "docTitle":'test file',
+            "docTitle":'ex: document title',
             "docVersion":"1.0.0",
             "docLang":"en",
             "elements":[]

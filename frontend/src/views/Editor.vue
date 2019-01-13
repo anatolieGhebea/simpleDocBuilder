@@ -12,16 +12,19 @@
                         <v-icon small left>refresh</v-icon>
                         <span class="caption">Refresh</span>
                     </v-btn>
+                    <!-- <v-btn flat outline color="green" class="right" @click="pingServer()">
+                        <v-icon small left>ping</v-icon>
+                        <span class="caption">ping Server</span>
+                    </v-btn> -->
                 </v-flex>
             </v-layout>
-
 
             <v-card flat>
                 <v-layout row wrap>
                     <v-flex sx12 md6 class="pa-2">
                         <v-text-field 
                             v-model="docTitle"
-                            label="Document title"
+                            label="Document title" 
                             
                         ></v-text-field>
                     </v-flex>
@@ -232,9 +235,17 @@
 </template>
 
 <script>
+// import socketio from 'socket.io-client';
+// import VueSocketIO from 'vue-socket.io';
+
 export default {
     data(){
         return {
+            //websocket
+            // socketInstance: socketio.connect(this.$hostname +':'+this.$hostnameport),
+            // socketInstance: new VueSocketIO({ "debug":true, "connection": this.$hostname +':'+this.$hostnameport }),
+            isConnected: false,
+            socketMessage: '',
             // snackbar
             snackbar: false,
             timeout: 800,
@@ -257,8 +268,10 @@ export default {
     methods:{
         getData(){
             /* eslint-disable */    
+            // first call to server must be a restApiCall, to init 
+            // file editing socket
             console.log(this.$route.params.docID);
-            this.$http.get(this.baseRoot+'/rawJson/'+this.$route.params.docID)
+            this.$http.get(this.baseRoot+'/edit/'+this.$route.params.docID)
             .then(response =>{
                 let res = response.body;
                 this.docTitle = res.docTitle;
@@ -274,6 +287,47 @@ export default {
                 /* eslint-disable */    
                 console.log(error);
             });
+        },
+        updateData(){
+            /* eslint-disable */    
+
+            var self = this;
+            this.$socket.emit('getFileData', '', function(resp){
+                // if data has not been updated, reload the data to restore 
+                // view to previous state
+                console.log(resp);
+                
+                if(resp.msg !== 'ok')
+                    console.log('some error in updating file data');
+                else{
+                    let res = resp.data;
+                    self.docTitle = res.docTitle;
+                    self.docVersion = res.docVersion;
+                    self.docLang = res.docLang;
+                    self.elements = res.pageElements;    
+                }
+                    
+                return 'ciao';
+            });
+
+            
+            // console.log(this.$route.params.docID);
+            // this.$http.get(this.baseRoot+'/rawJson/'+this.$route.params.docID)
+            // .then(response =>{
+            //     let res = response.body;
+            //     this.docTitle = res.docTitle;
+            //     this.docVersion = res.docVersion;
+            //     this.docLang = res.docLang;
+            //     this.elements = res.pageElements;
+
+            //     /* eslint-disable */    
+            //     // console.log(typeof this.elements);
+                
+
+            // }).catch(error => {
+            //     /* eslint-disable */    
+            //     console.log(error);
+            // });
         },
         isSection(key){
             return  key.indexOf('section') > -1 ? true: false;
@@ -377,24 +431,17 @@ export default {
                     "id": key
                 } 
             };
-            console.log(this.$route.params.docID);          
-            this.$http.post(this.baseRoot+'/'+action+'/'+this.$route.params.docID, sendable)
-                .then(function(response){
-                    // console.log(response);
-                    // this.$router.push('/feed');
-                    if(response.body.msg === 'ok'){
-                        this.showMsg('ok');
-                        // reload data
-                        this.getData();
-                    }else{
-                        // no need to reload, dom did not changed
-                        this.showMsg('false');
-                    }
 
-                }).catch(error => {
-                    console.log(error); 
-                });
-            
+            var self = this;
+            this.$socket.emit('removeElement', sendable, function(resp){
+                // if data has not been updated, reload the data to restore 
+                // view to previous state
+                if(resp.msg === 'ok')
+                    self.updateData();
+
+                self.showMsg(resp.msg);
+                
+            });
             return;
         },
         createUpdate(sendable, pgAction){
@@ -408,20 +455,19 @@ export default {
             //     }
             // };
 
-            let action = "createUpdate";  
-            console.log(this.$route.params.docID);          
-            this.$http.post(this.baseRoot+'/'+action+'/'+this.$route.params.docID, sendable)
-                .then(function(response){
-                    // console.log(response);
-                    this.showMsg(response.body.msg);
+            var self = this; // => context 
+            this.$socket.emit('createUpdate', sendable, function(resp){
+                // if data has not been updated, reload the data to restore 
+                // view to previous state
+                
+                if(resp.msg !== 'ok' || pgAction === 'create')
+                    self.updateData(); 
 
-                    if(pgAction === 'create')
-                        this.getData();
+                self.showMsg(resp.msg);
+                
+            });
+            // this.$socket.emit('createUpdate', sendable);
 
-                }).catch(error => {
-                    console.log(error); 
-                });
-            
             return;
         },
         showMsg(res, msg){
@@ -456,25 +502,62 @@ export default {
                 element.originalTarget.style.height = "5px";
                 element.originalTarget.style.height = (element.originalTarget.scrollHeight)+"px";
             }
+        },
+        pingServer() {
+        // Send the "pingServer" event to the server.
+            console.log('ping');
+            
+            this.$socket.emit('pingServer', 'PING!')
         }
     },
 
     created(){        
         this.getData();
+        // console.log(this.sockets);
     },
     watch:{
         elements: function() {
-            console.log('fiered');
+            console.log('fiered for grw');
             
             let txtAreas = document.querySelectorAll("textarea");
-            console.log(txtAreas);
+            // console.log(txtAreas);
             
             txtAreas.forEach(element => {
                 this.auto_grow(element);
             });
         }
-    }
+    },
+    sockets: {
+        connect: function () {
+            console.log('socket connected')
+        },
+        connect() {
+        // Fired when the socket connects.
+            console.log('connected');
+            this.isConnected = true;
+        },
 
+        disconnect() {
+            this.isConnected = false;
+        },
+
+        // Fired when the server sends something on the "messageChannel" channel.
+        message(data){
+            console.log(data);
+        },
+
+        // on concurrent edting, notifies that changes have been done
+        // and refresh is needed
+        elementChangedEvent(data){
+            console.log('update signal recieved');
+            console.log(data);
+            
+            if(data.update === true)
+                this.updateData();
+        }
+
+
+    }
     
 }
 </script>

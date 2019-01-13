@@ -4,6 +4,8 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var http = require('http');
+var io = require('socket.io');
 // var http = require('http');
 // var fs = require('fs');
 var path = require('path');
@@ -38,7 +40,33 @@ require('./routes.js')(app);
 var port = 8080;
 
 // start the server
-app.listen(port, function(){
-    console.log('Live! running on port: '+port);
-});  
+// app.listen(port, function(){
+//     console.log('Live! running on port: '+port);
+// });  
  
+var server = http.createServer(app).listen(port, function(){
+    console.log('Live! running on port: '+port);
+});
+
+var io = io.listen(server);
+app.set('io', io);
+var clients = 0;
+
+io.on('connection', function(client){
+    console.log('socket connection');
+    clients++;
+    client.emit('message', "hello from server");
+
+    //set client connection as global
+    app.set('iocl', client);
+
+    client.on('pingServer', function(data){
+        console.log(data); 
+    });
+
+    client.on('disconnect', function(){
+        clients--;
+    });
+
+});
+
