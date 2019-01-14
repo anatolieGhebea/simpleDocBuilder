@@ -43,5 +43,5 @@ npm install
 to install the dependencies, and then run 
 
 ```
-npm serve
+npm run serve
 ```
