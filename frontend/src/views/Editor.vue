@@ -12,10 +12,10 @@
                         <v-icon small left>refresh</v-icon>
                         <span class="caption">Refresh</span>
                     </v-btn>
-                    <!-- <v-btn flat outline color="green" class="right" @click="pingServer()">
+                    <v-btn flat outline color="green" class="right" @click="pingServer()">
                         <v-icon small left>ping</v-icon>
                         <span class="caption">ping Server</span>
-                    </v-btn> -->
+                    </v-btn>
                 </v-flex>
             </v-layout>
 
@@ -235,8 +235,8 @@
 </template>
 
 <script>
-// import socketio from 'socket.io-client';
-// import VueSocketIO from 'vue-socket.io';
+import socketio from 'socket.io-client';
+import VueSocketIO from 'vue-socket.io';
 
 export default {
     data(){
@@ -244,8 +244,8 @@ export default {
             //websocket
             // socketInstance: socketio.connect(this.$hostname +':'+this.$hostnameport),
             // socketInstance: new VueSocketIO({ "debug":true, "connection": this.$hostname +':'+this.$hostnameport }),
+            sock: null,
             isConnected: false,
-            socketMessage: '',
             // snackbar
             snackbar: false,
             timeout: 800,
@@ -456,7 +456,8 @@ export default {
             // };
 
             var self = this; // => context 
-            this.$socket.emit('createUpdate', sendable, function(resp){
+            this.sock.io.emit('createUpdate', sendable, function(resp){
+            // this.$socket.emit('createUpdate', sendable, function(resp){
                 // if data has not been updated, reload the data to restore 
                 // view to previous state
                 
@@ -507,11 +508,40 @@ export default {
         // Send the "pingServer" event to the server.
             console.log('ping');
             
-            this.$socket.emit('pingServer', 'PING!')
+            // this.$socket.emit('pingServer', 'PING!')
+            this.sock.io.emit('pingServer', 'PING!')
+        },
+        connect() {
+        // Fired when the socket connects.
+            console.log('connected');
+            this.isConnected = true;
+        },
+        connected() {
+        // Fired when the socket connects.
+            console.log('connected');
+            this.isConnected = true;
+        },
+        message(data){
+            console.log(data);
         }
     },
 
-    created(){        
+    created(){   
+        var s = socketio('http://localhost:8180');
+        this.sock = new VueSocketIO( {"debug":true, "connection":s });
+        // Vue.use( new VueSocketIO( {"debug":true, "connection":SocketInstance }));
+
+console.log( s);
+console.log(s.id);
+
+console.log('===================');
+console.log(this.sock);
+console.log(this.sock.io.connected);
+
+console.log('===================');
+
+
+
         this.getData();
         // console.log(this.sockets);
     },
@@ -528,9 +558,6 @@ export default {
         }
     },
     sockets: {
-        connect: function () {
-            console.log('socket connected')
-        },
         connect() {
         // Fired when the socket connects.
             console.log('connected');
