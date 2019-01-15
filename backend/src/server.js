@@ -62,6 +62,7 @@ io.on('connection', function(client){
 
     client.on('pingServer', function(data){
         console.log(data); 
+        client.emit('message','pong from server');
     });
 
     client.on('disconnect', function(){

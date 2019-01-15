@@ -13,7 +13,6 @@
                         <span class="caption">Refresh</span>
                     </v-btn>
                     <v-btn flat outline color="green" class="right" @click="pingServer()">
-                        <v-icon small left>ping</v-icon>
                         <span class="caption">ping Server</span>
                     </v-btn>
                 </v-flex>
@@ -60,14 +59,7 @@
                     <h2 class="grey--text">Index</h2>
                         
                         <ul>
-                            <li v-for="(sec, key) in this.elements" :key="key">
-                                <a v-bind:href="'#'+key" >{{ sec.title }} </a>
-                                <ul >
-                                    <li v-for="(subsec, key1) in  subsecOf(sec)" :key="key1"  >
-                                        <a v-bind:href="'#'+key1" >{{ subsec.title }} </a>
-                                    </li>
-                                </ul>
-                            </li> 
+                            <menu-child v-for="(mch, key) in this.elements" :k="key" :menu-child="mch" :key="key"></menu-child>
                         </ul>
 
                     </v-card>
@@ -98,98 +90,8 @@
                          -->
 
                         <v-layout column>
-                            <v-flex v-for="(lv1, key ) in elements" :key="key">
-                                <div class="pa-1 section">
-                                    <h1>
-                                        <input 
-                                            v-bind:id="key"
-                                            v-model="lv1.title"
-                                            @blur="updateEl"
-                                        />
-                                    </h1>
-
-                                    <div v-for="(lv2, key1) in lv1" :key="key1">
-                                        <div v-if="isSubSection(key1)">
-                                            <!-- subsection found -->
-                                            <div class="px-3 subsection">
-                                                <h2>
-                                                    <input 
-                                                        v-bind:id="key1"
-                                                        v-model="lv2.title"
-                                                        @blur="updateEl"
-                                                    />
-                                                </h2>
-                                                
-                                                <div v-for="(lv3, key2) in lv2" :key="key2">
-                                                    <div v-if="isParagrph(key2)" class="px-2 paragraph">
-                                                        <p>
-                                                            <textarea 
-                                                                v-bind:id="key2"
-                                                                v-model="lv3.content"
-                                                                @blur="updateEl"
-                                                                @change="auto_grow($event)"
-                                                            />
-                                                        </p>
-                                                        <div class="action-btn">
-                                                            <v-spacer></v-spacer>
-                                                            <v-btn v-bind:id="key2" small icon class="red--text" @click="rmEl(key2)">
-                                                                <v-icon>delete</v-icon>
-                                                            </v-btn>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="action-btn">
-                                                    <v-btn v-bind:id="key1" small flat class="blue--text" @click="addNewEl(key1, paragraph)">
-                                                        <v-icon>add_circle_outline</v-icon>
-                                                        <span>paragraph</span>
-                                                    </v-btn>
-                                                    <v-spacer></v-spacer>
-                                                    <v-btn v-bind:id="key1" small icon class="red--text" @click="rmEl(key1)">
-                                                        <v-icon>delete</v-icon>
-                                                    </v-btn>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div v-else-if="isParagrph(key1)">
-                                            <!-- paragraph found -->
-                                            <div class="mt-1 px-1 paragraph"> 
-                                                <p> 
-                                                    <textarea
-                                                        v-bind:id="key1"
-                                                        v-model="lv2.content"
-                                                        @blur="updateEl"
-                                                        @change="auto_grow($event)"
-                                                    />
-                                                </p>
-                                                <div class="action-btn">
-                                                    <v-spacer></v-spacer>
-                                                    <v-btn v-bind:id="key1"  small  icon  class="red--text" @click="rmEl(key1)">
-                                                        <v-icon>delete</v-icon>
-                                                    </v-btn>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="action-btn">
-                                        <v-btn v-bind:id="key" small flat class="blue--text" @click="addNewEl(key, subsection)">
-                                            <v-icon>add</v-icon>
-                                            <span>SubSection</span>
-                                        </v-btn>
-                                        <v-btn v-bind:id="key" small flat class="blue--text" @click="addNewEl(key, paragraph)">
-                                            <v-icon>add_circle_outline</v-icon>
-                                            <span>paragraph</span>
-                                        </v-btn>
-                                        <v-spacer></v-spacer>
-                                        <v-btn v-bind:id="key" small icon class="red--text" @click="rmEl(key)">
-                                            <v-icon>delete</v-icon>
-                                        </v-btn>
-                                    </div>
-                                </div>
-
+                            <v-flex v-for="(lv1, k1 ) in elements" :key="k1">
+                                <child :k="k1" :child="lv1"></child>
                                 <br/><br/>
                             </v-flex> 
                         </v-layout>
@@ -202,7 +104,7 @@
                         </div>
                     </v-card>
                 </v-flex>
-                <v-flex md3 class="px-1 hidden-sm-and-down">
+                <v-flex md3 class="px-1 hidden-sm-and-down" v-if="enableComments">
                     <!-- <h2 class="grey--text">comments</h2> -->
                     <v-card flat class="grey lighten-5 pa-1">
                         some conente
@@ -235,17 +137,21 @@
 </template>
 
 <script>
-import socketio from 'socket.io-client';
-import VueSocketIO from 'vue-socket.io';
+import Child from '../components/Childs.vue';
+import MenuChild from '../components/MenuChilds.vue';
 
 export default {
+    components:{
+        Child,
+        MenuChild
+    },
     data(){
         return {
             //websocket
-            // socketInstance: socketio.connect(this.$hostname +':'+this.$hostnameport),
-            // socketInstance: new VueSocketIO({ "debug":true, "connection": this.$hostname +':'+this.$hostnameport }),
-            sock: null,
             isConnected: false,
+            //users
+            enableComments: false,
+
             // snackbar
             snackbar: false,
             timeout: 800,
@@ -456,8 +362,8 @@ export default {
             // };
 
             var self = this; // => context 
-            this.sock.io.emit('createUpdate', sendable, function(resp){
-            // this.$socket.emit('createUpdate', sendable, function(resp){
+            
+            this.$socket.emit('createUpdate', sendable, function(resp){
                 // if data has not been updated, reload the data to restore 
                 // view to previous state
                 
@@ -508,40 +414,13 @@ export default {
         // Send the "pingServer" event to the server.
             console.log('ping');
             
-            // this.$socket.emit('pingServer', 'PING!')
-            this.sock.io.emit('pingServer', 'PING!')
-        },
-        connect() {
-        // Fired when the socket connects.
-            console.log('connected');
-            this.isConnected = true;
-        },
-        connected() {
-        // Fired when the socket connects.
-            console.log('connected');
-            this.isConnected = true;
-        },
-        message(data){
-            console.log(data);
+            this.$socket.emit('pingServer', 'PING!')
         }
+        
     },
 
     created(){   
-        var s = socketio('http://localhost:8180');
-        this.sock = new VueSocketIO( {"debug":true, "connection":s });
-        // Vue.use( new VueSocketIO( {"debug":true, "connection":SocketInstance }));
-
-console.log( s);
-console.log(s.id);
-
-console.log('===================');
-console.log(this.sock);
-console.log(this.sock.io.connected);
-
-console.log('===================');
-
-
-
+        
         this.getData();
         // console.log(this.sockets);
     },
@@ -558,6 +437,10 @@ console.log('===================');
         }
     },
     sockets: {
+        connect: function(){
+            console.log('connece');
+            
+        },
         connect() {
         // Fired when the socket connects.
             console.log('connected');
