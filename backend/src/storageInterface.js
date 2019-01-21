@@ -87,7 +87,9 @@ StorageInterface.prototype.getRawFile = function() {
 }
 
 StorageInterface.prototype.addElement = function(elData) {
+console.log(elData);
 
+return false;
     let ok = true;
     //
     // @todo Implement a better way of doing this operations
@@ -177,7 +179,9 @@ StorageInterface.prototype.addElement = function(elData) {
 
 
 StorageInterface.prototype.rmElement = function(elData) {
-
+    console.log(elData);
+    
+return false;
     let ok = true;
     //
     // @todo Implement a better way of doing this operations
