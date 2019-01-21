@@ -64,7 +64,7 @@
 
                     </v-card>
                 </v-flex>
-                <v-flex md6 class="">
+                <v-flex  md8 class="">
                     <!-- <h2 class="grey--text">Content</h2> -->
                     <v-card flat class="pa-2">
                         
@@ -563,6 +563,34 @@ export default {
     }
     .editor .edit-col textarea:focus {
         border-left: 1px dashed blueviolet;
+    }
+
+
+    .editor .edit-col .section-1 {
+        padding-left: 0.2rem;
+
+    }
+    .editor .edit-col .section-2 {
+        padding-left: 1rem;
+    }
+    .editor .edit-col .section-3 {
+        padding-left: 1rem;
+    }
+    .editor .edit-col .atom-element {
+        padding-left: 1rem;
+    }
+    .editor .edit-col .section-1:hover {
+        background: #f1f1f1;
+
+    }
+    .editor .edit-col .section-2:hover {
+        background: #dad9d9; 
+    }
+    .editor .edit-col .section-3:hover {
+        background: #c7c7c7;
+    }
+    .editor .edit-col .atom-element:hover {
+        background: #c5b8b8;
     }
 
 
