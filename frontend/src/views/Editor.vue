@@ -54,7 +54,7 @@
 
             <v-layout row class="mt-3 edit-col">
                 <!-- 3 col configuration -->
-                <v-flex md3 class="pa-1 hidden-sm-and-down sideMenu">
+                <v-flex md3 lg2 class="pa-1 hidden-sm-and-down sideMenu">
                     <v-card flat color="grey lighten-4" class="pa-1">
                     <h2 class="grey--text">Index</h2>
                         
@@ -64,7 +64,7 @@
 
                     </v-card>
                 </v-flex>
-                <v-flex  md8 class="">
+                <v-flex  md8 lg6 class="">
                     <!-- <h2 class="grey--text">Content</h2> -->
                     <v-card flat class="pa-2">
                         
@@ -91,7 +91,7 @@
 
                         <v-layout column>
                             <v-flex v-for="(lv1, k1 ) in elements" :key="k1">
-                                <child :k="k1" :child="lv1"></child>
+                                <child :k="k1" :child="lv1" @handleEventData="handleEventData"></child>
                                 <br/><br/>
                             </v-flex> 
                         </v-layout>
@@ -253,6 +253,26 @@ export default {
             }
             return l;
         },
+        handleEventData(data){
+            
+            console.log('got the event');
+            
+            switch (data.action) {
+                case 'update':
+                    this.updateEl(data.el);
+                    break;
+                case 'create':
+                    this.addNewEl(data.el);
+                    break;
+                case 'delete':
+                    this.rmEl(data.key);
+                    break;
+            
+                default:
+                    break;
+            }
+
+        },
         updateEl(e){
             // console.log('blur');
             // console.log(e.target.value);
@@ -270,8 +290,7 @@ export default {
             return;
         },
         addNewEl(parentKey, elType){
-            console.log(parentKey);
-            console.log(elType);
+            
             
             let sendable = {
                 "action": "createUpdate",
@@ -283,7 +302,7 @@ export default {
 
 
             if(parentKey === this.rootDoc){
-                sendable.elData.id = 'section_'+this.getNewNumericId();
+                sendable.elData.id = 's_'+this.getNewNumericId();
                 sendable.elData.cnt = 'n.a';        
             }else{
 

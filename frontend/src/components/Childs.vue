@@ -16,19 +16,15 @@
                     @blur="updateEl"
                 />
             </h2>
-            <h3 v-if="child.liv==2">
+            <h3 v-if="child.liv==3">
                 <input 
                     v-bind:id="k"
                     v-model="child.title"
                     @blur="updateEl"
                 />
             </h3>
-            
-
-            
-            
-
-            <child v-for="(ch, k2) in child.childs" :key="k2" :k="k2" :child="ch"></child>
+                        
+            <child v-for="(ch, k2) in child.childs" :key="k2" :k="k2" :child="ch" @handleEventData="handleEventData"></child>
             
             <div class="action-btn">
                 <v-btn v-bind:id="k" small flat class="blue--text" @click="addNewEl()">
@@ -40,7 +36,7 @@
                     <span>paragraph</span>
                 </v-btn>
                 
-                <v-btn v-bind:id="k" small icon class="red--text" @click="rmEl(key)">
+                <v-btn v-bind:id="k" small icon class="red--text" @click="rmEl(k)">
                     <v-icon>delete</v-icon>
                 </v-btn>
             </div>
@@ -48,10 +44,12 @@
         <div v-else class="atom-element">
             <p v-if="child.type=='p'">
                 <textarea 
-                    v-model="child.content">
+                    v-bind:id="k"
+                    v-model="child.content"
+                    @blur="updateEl">
                 </textarea>
             </p>
-            <div class="action-btn">
+            <div class="action-btn ">
                 <v-spacer></v-spacer>
                 <v-btn v-bind:id="k"  small  icon  class="red--text" @click="rmEl(k)">
                     <v-icon>delete</v-icon>
@@ -79,8 +77,28 @@ export default {
         console.log(this.k+'-'+this.child);
     },
     methods: {
-        updateEl(el){
+        updateEl(e){
+            
+            let data = {
+                action: 'update',
+                el: e
+            }
 
+            this.$emit('handleEventData', data);
+
+        },
+        rmEl(key){
+            
+            let data = {
+                action: 'delete',
+                key: key,
+            }
+
+            this.$emit('handleEventData', data);
+        },
+        handleEventData(data){
+            // event bubbling
+            this.$emit('handleEventData', data);
         },
         getHTagOpen(liv){
             return `<h${liv}>`;
