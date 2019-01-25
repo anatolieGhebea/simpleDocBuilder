@@ -24,7 +24,7 @@
                 />
             </h3>
                         
-            <child v-for="(ch, k2) in child.childs" :key="k2" :k="k2" :child="ch" @handleEventData="handleEventData"></child>
+            <child v-for="(ch, k2) in child.childs" :key="k2" :k="k2" :pK="k" :child="ch" @handleEventData="handleEventData"></child>
             
             <div class="action-btn">
                 <v-btn v-bind:id="k" small flat class="blue--text" @click="addNewEl()">
@@ -51,7 +51,7 @@
             </p>
             <div class="action-btn ">
                 <v-spacer></v-spacer>
-                <v-btn v-bind:id="k"  small  icon  class="red--text" @click="rmEl(k)">
+                <v-btn v-bind:id="k" small  icon  class="red--text" @click="rmEl(k, pK)">
                     <v-icon>delete</v-icon>
                 </v-btn>
             </div>
@@ -64,6 +64,7 @@ export default {
     name:'child',
     props:{
         k: String,
+        pK: String,
         child: Object
     },
     data() {
@@ -77,6 +78,10 @@ export default {
         console.log(this.k+'-'+this.child);
     },
     methods: {
+        parentKey(){
+            console.log(this.k);
+            console.log(this.pK);
+        },
         updateEl(e){
             
             let data = {
@@ -87,11 +92,12 @@ export default {
             this.$emit('handleEventData', data);
 
         },
-        rmEl(key){
+        rmEl(key, pKey){
             
             let data = {
                 action: 'delete',
                 key: key,
+                pKey: pKey
             }
 
             this.$emit('handleEventData', data);

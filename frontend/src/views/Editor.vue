@@ -91,7 +91,7 @@
 
                         <v-layout column>
                             <v-flex v-for="(lv1, k1 ) in elements" :key="k1">
-                                <child :k="k1" :child="lv1" @handleEventData="handleEventData"></child>
+                                <child :k="k1" :pk="k1" :child="lv1" @handleEventData="handleEventData"></child>
                                 <br/><br/>
                             </v-flex> 
                         </v-layout>
@@ -256,6 +256,7 @@ export default {
         handleEventData(data){
             
             console.log('got the event');
+            console.log(data);
             
             switch (data.action) {
                 case 'update':
