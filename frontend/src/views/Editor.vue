@@ -91,13 +91,13 @@
 
                         <v-layout column>
                             <v-flex v-for="(lv1, k1 ) in elements" :key="k1">
-                                <child :k="k1" :pk="k1" :child="lv1" @handleEventData="handleEventData"></child>
+                                <child :k="k1" :pK="[]" :child="lv1" @handleEventData="handleEventData" @errorEvent="errorEvent"></child>
                                 <br/><br/>
                             </v-flex> 
                         </v-layout>
 
                         <div class="action-btn">
-                            <v-btn v-bind:id="rootDoc" small flat class="blue--text" @click="addNewEl(rootDoc, 'p')">
+                            <v-btn v-bind:id="rootDoc" small flat class="blue--text" @click="createSecEl">
                                 <v-icon>add_circle_outline</v-icon>
                                 <span>section</span>
                             </v-btn>
@@ -260,19 +260,35 @@ export default {
             
             switch (data.action) {
                 case 'update':
-                    this.updateEl(data.el);
+                    this.createUpdate(data, 'update');
                     break;
                 case 'create':
-                    this.addNewEl(data.el);
+                    this.createUpdate(data, 'create');
                     break;
                 case 'delete':
-                    this.rmEl(data.key);
+                    this.rmEl(data);
                     break;
             
                 default:
                     break;
             }
 
+        },
+        errorEvent(data){
+            // event bubbling
+            this.$emit('errorEvent', data);
+        },
+        createSecEl(){
+
+            let data = {
+                action: 'create',
+                elType: 'section',
+                pathIds: 'root',
+                selElId: 'root',
+                cnt: 'n.a'
+            }
+
+            this.handleEventData(data);
         },
         updateEl(e){
             // console.log('blur');
@@ -347,17 +363,8 @@ export default {
             this.createUpdate(sendable, 'create');
             return;
         },
-        rmEl(key){
+        rmEl(sendable){
             // console.log(key);
-
-            let action = "delete"
-            let sendable = { 
-                "action": "delete",
-                "elData": { 
-                    "id": key
-                } 
-            };
-
             var self = this;
             this.$socket.emit('removeElement', sendable, function(resp){
                 // if data has not been updated, reload the data to restore 
@@ -371,16 +378,6 @@ export default {
             return;
         },
         createUpdate(sendable, pgAction){
-
-            // @todo check not empty sendable
-            // let sendable = {
-            //     "action":action,
-            //     "elData":{
-            //         "id": e.target.id,
-            //         "cnt": e.target.value,
-            //     }
-            // };
-
             var self = this; // => context 
             
             this.$socket.emit('createUpdate', sendable, function(resp){
@@ -569,9 +566,11 @@ export default {
 
     .editor .edit-col input {
         width: 100%;
+        margin-bottom: 1px; 
     }
 
     .editor .edit-col input:focus {
+        margin-bottom: 0;
         border-bottom: 1px solid #ccc;
     }
 
