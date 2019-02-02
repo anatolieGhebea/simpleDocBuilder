@@ -23,7 +23,7 @@ function StorageInterface(fileName, filePath){
     this.filePath = filePath || path.join(__dirname, '../inAppStorage');
     this.workingFile = this.filePath+'/'+ this.fileName;
 
-    console.log('loading storage with type:'+this.type+' path:'+this.filePath+' file:'+this.fileName);
+    console.log('loading storage from path:'+this.filePath+' file:'+this.fileName);
     // this.createBaseFile();
 }
 

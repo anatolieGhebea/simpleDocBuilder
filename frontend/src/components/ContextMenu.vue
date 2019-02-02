@@ -91,10 +91,10 @@ export default {
                 this.$emit('errorEvent', msg);
             }
         },
-        handleEventData(data){
-            // event bubbling
-            this.$emit('handleEventData', data);
-        },
+        // handleEventData(data){
+        //     // event bubbling
+        //     this.$emit('handleEventData', data);
+        // },
     }
 
 }

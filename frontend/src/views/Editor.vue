@@ -215,25 +215,6 @@ export default {
                     
                 return 'ciao';
             });
-
-            
-            // console.log(this.$route.params.docID);
-            // this.$http.get(this.baseRoot+'/rawJson/'+this.$route.params.docID)
-            // .then(response =>{
-            //     let res = response.body;
-            //     this.docTitle = res.docTitle;
-            //     this.docVersion = res.docVersion;
-            //     this.docLang = res.docLang;
-            //     this.elements = res.pageElements;
-
-            //     /* eslint-disable */    
-            //     // console.log(typeof this.elements);
-                
-
-            // }).catch(error => {
-            //     /* eslint-disable */    
-            //     console.log(error);
-            // });
         },
         isSection(key){
             return  key.indexOf('section') > -1 ? true: false;
@@ -256,7 +237,7 @@ export default {
         handleEventData(data){
             
             console.log('got the event');
-            console.log(data);
+            // console.log(data);
             
             switch (data.action) {
                 case 'update':
@@ -289,79 +270,6 @@ export default {
             }
 
             this.handleEventData(data);
-        },
-        updateEl(e){
-            // console.log('blur');
-            // console.log(e.target.value);
-            // console.log(e.target.id);
-            
-            let sendable = {
-                "action": "createUpdate",
-                "elData":{
-                    "id": e.target.id,
-                    "cnt": e.target.value,
-                }
-            };
-            
-            this.createUpdate(sendable, 'update');
-            return;
-        },
-        addNewEl(parentKey, elType){
-            
-            
-            let sendable = {
-                "action": "createUpdate",
-                "elData":{ 
-                    "id":null,
-                    "cnt":null
-                }
-            };
-
-
-            if(parentKey === this.rootDoc){
-                sendable.elData.id = 's_'+this.getNewNumericId();
-                sendable.elData.cnt = 'n.a';        
-            }else{
-
-                let hierarchy = parentKey.split("-");
-                
-
-                switch (hierarchy.length) {
-                    case 1:
-                        // adding to section
-                        if (elType == this.subsection) {
-                            sendable.elData.id = hierarchy[0]+'-subsection_'+this.getNewNumericId();
-                            sendable.elData.cnt = 'n.a';
-                        } else if(elType == this.paragraph){
-                            sendable.elData.id = hierarchy[0]+'-paragraph_'+this.getNewNumericId();
-                            sendable.elData.cnt = 'n.a';
-                        }else{
-                            this.showMsg('false', 'invalid element type!')
-                            return;
-                        }
-
-                        break;
-                    case 2:
-                        // adding to subsection
-                        // clicked add paragraph in subsection
-                        // check for key beeing subsection (optional)
-                        if(this.isSubSection(parentKey) && elType == this.paragraph){
-                            sendable.elData.id = hierarchy[0]+'-'+hierarchy[1]+'-paragraph_'+this.getNewNumericId();
-                            sendable.elData.cnt = 'n.a';
-                        }else{
-                            this.showMsg('false', 'invalid element type or parentId!')
-                            return;
-                        }
-
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            // console.log( sendable );
-            this.createUpdate(sendable, 'create');
-            return;
         },
         rmEl(sendable){
             // console.log(key);

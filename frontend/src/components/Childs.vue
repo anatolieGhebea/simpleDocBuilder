@@ -32,12 +32,12 @@
                 </v-tooltip>
             </div>
 
-            <context-menu :k="k" :pK="pathIds" :liv="child.liv" :lineColor="livColor" ></context-menu>
+            <context-menu :k="k" :pK="pathIds" :liv="child.liv" :lineColor="livColor" @handleEventData="propagateEventData" @errorEvent="propagateErrorEvent"></context-menu>
 
             
-            <child v-for="(ch, k2) in child.childs" :key="k2" :k="k2" :pK="pathIds" :child="ch" @handleEventData="handleEventData" @errorEvent="errorEvent"></child>
+            <child v-for="(ch, k2) in child.childs" :key="k2" :k="k2" :pK="pathIds" :child="ch" @handleEventData="propagateEventData" @errorEvent="propagateErrorEvent"></child>
             
-            <context-menu :k="k" :pK="pathIds" :liv="child.liv" :lineColor="livColor" ></context-menu>
+            <context-menu :k="k" :pK="pathIds" :liv="child.liv" :lineColor="livColor" @handleEventData="propagateEventData" @errorEvent="propagateErrorEvent"></context-menu>
             
         </div>
         <div v-else >
@@ -56,7 +56,7 @@
                     <span> <b class="red--text">Warning!!</b> the highlighted element will be removed</span>
                 </v-tooltip>
             </div>
-            <context-menu :k="k" :pK="pathIds" :liv="pLiv" :lineColor="pLivColor" ></context-menu>
+            <context-menu :k="k" :pK="pathIds" :liv="pLiv" :lineColor="pLivColor" @handleEventData="propagateEventData" @errorEvent="propagateErrorEvent"></context-menu>
         </div>
         
 
@@ -157,11 +157,12 @@ export default {
 
             this.$emit('handleEventData', data);
         },
-        handleEventData(data){
+        propagateEventData(data){
             // event bubbling
+
             this.$emit('handleEventData', data);
         },
-        errorEvent(data){
+        propagateErrorEvent(data){
             // event bubbling
             this.$emit('errorEvent', data);
         },

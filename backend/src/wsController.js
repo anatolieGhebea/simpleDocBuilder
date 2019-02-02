@@ -64,7 +64,8 @@ Controller.prototype.edit = function(req, res){
     // add or update element in the file
     sockCl.on('createUpdate', (data, ackFn) =>{
         console.log(data);
-        let r = this.storage.addElement(data);
+        // let r = this.storage.addElement(data);
+        let r = false;
         if(r){
             // sockCl.emit('createUpdate', {msg:'ok'});
             // io.sockets.in(room).emit('elementChangedEvent', {update: true});
@@ -78,8 +79,13 @@ Controller.prototype.edit = function(req, res){
     // remove elements from file
     sockCl.on('removeElement', (data, ackFn) =>{
         console.log(data);
-        let r = this.storage.rmElement(data);
+        // let r = this.storage.rmElement(data);
+        let r = false;
+        console.log(r);
+        
         if(r){
+            console.log(msg);
+            
             // sockCl.emit('createUpdate', {msg:'ok'});
             // io.sockets.in(room).emit('elementChangedEvent', {update: true});
             sockCl.broadcast.to(room).emit('elementChangedEvent', {update: true});
@@ -87,6 +93,7 @@ Controller.prototype.edit = function(req, res){
         }else{
             ackFn({msg:"error "});
         }
+
     });
 
     // send data to client
